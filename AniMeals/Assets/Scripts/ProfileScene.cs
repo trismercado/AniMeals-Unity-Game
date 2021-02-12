@@ -18,6 +18,9 @@ public class ProfileScene : MonoBehaviour
     public Text actLevelText;
     public Text DBWText;
 
+    public Text actLevelDesc;
+    public Text dBWDesc;
+
     private Player gs;
     private GameObject go;
 
@@ -40,15 +43,22 @@ public class ProfileScene : MonoBehaviour
 
         if (float.Parse(activityLevel) == 1) {
             actLevelText.text = "Bed Rest But Mobile";
+            actLevelDesc.text = "You are usually in bed.";
         } else if (float.Parse(activityLevel) == 2) {
             actLevelText.text = "Sedentary";
+            actLevelDesc.text = "You spend most of your day sitting.";
         } else if (float.Parse(activityLevel) == 3) {
             actLevelText.text = "Light";
+            actLevelDesc.text = "You usually spend a large part of your day on your feet.";
         } else if (float.Parse(activityLevel) == 4) {
             actLevelText.text = "Moderate";
+            actLevelDesc.text = "You spend a good part of the day doing some physical activity";
         } else if (float.Parse(activityLevel) == 5) {
             actLevelText.text = "Very Active";
+            actLevelDesc.text = "You spend most of the day doing heavy physical activity";
         }
+
+        Display();
     }
 
     // Update is called once per frame
@@ -68,7 +78,20 @@ public class ProfileScene : MonoBehaviour
     public void OnEditClick()
     {
         Debug.Log("Edit was clicked!");
-        // SceneManager.LoadScene(1);
+        SceneManager.LoadScene(10);
+
+    }
+
+    public void Display() {
+        float weight = float.Parse(PlayerPrefs.GetString("weightKeyName"));
+        float dbw = float.Parse(PlayerPrefs.GetString("DBWKeyName"));
+        if (weight < (dbw-(0.1f*dbw))) {
+            dBWDesc.text = "Your weight is below your ideal weight range.";
+        } else if (weight > (dbw+(0.1f*dbw))) {
+            dBWDesc.text = "Your weight is above your ideal weight range.";
+        } else {
+            dBWDesc.text = "Your weight is around your ideal weight range.";
+        }
 
     }
 }

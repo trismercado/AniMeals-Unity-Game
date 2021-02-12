@@ -12,6 +12,7 @@ public class AchievementScene : MonoBehaviour
     
     public GameObject streak3;
     public GameObject streak7;
+    public Text coupsText;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +25,9 @@ public class AchievementScene : MonoBehaviour
         }
         gs = go.GetComponent<Player>();
 
+        
         CheckIfAchieved();
+
     }
 
     // Update is called once per frame
@@ -43,9 +46,9 @@ public class AchievementScene : MonoBehaviour
     public void CheckIfAchieved(){
         if (gs.achieve.Count != 0) {
             foreach (string i in gs.achieve) {
-                if (i.Equals("streak3")) {
+                if (i.Equals("3-day healthy streak")) {
                     streak3.SetActive(true);
-                } else if (i.Equals("streak7")) {
+                } else if (i.Equals("7-day healthy streak")) {
                     streak7.SetActive(true);
                 }
             }

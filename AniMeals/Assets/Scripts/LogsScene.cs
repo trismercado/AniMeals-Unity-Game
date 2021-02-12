@@ -63,10 +63,8 @@ public class LogsScene : MonoBehaviour
         int index = gs.dailyFoodIntake.FindIndex(a => a.dateLogged.Equals(current.ToString()));
 
         if (index >= 0) {
-            Log = gs.dailyFoodIntake[index];
-            
+            Log = gs.dailyFoodIntake[index];        
             DisplayFoodLogs();
-            // SetBarValue();
         } else {
             Debug.Log("No logs.");
         }
@@ -180,8 +178,5 @@ public class LogsScene : MonoBehaviour
         
     }
 
-    public void SetBarValue() {
-        
-    }
 }
 

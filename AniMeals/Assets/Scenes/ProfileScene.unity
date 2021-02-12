@@ -1571,6 +1571,8 @@ MonoBehaviour:
   heightText: {fileID: 911942182}
   actLevelText: {fileID: 1375054841}
   DBWText: {fileID: 1879964521}
+  actLevelDesc: {fileID: 1881128022}
+  dBWDesc: {fileID: 799104238}
 --- !u!4 &1269456553
 Transform:
   m_ObjectHideFlags: 0
@@ -1621,20 +1623,7 @@ MonoBehaviour:
   achieve: []
   foodIntake: []
   dailyFoodIntake: []
-  dayLog:
-    foodLogsForTheDay: []
-    dateLogged: 
-    TEA: 0
-    CHO: 0
-    PRO: 0
-    FAT: 0
-    TEAIntake: 0
-    CHOIntake: 0
-    PROIntake: 0
-    FATIntake: 0
-  weight: 
-  height: 
-  activityLevel: 
+  currentSkinID: 0
   BMI: 0
   TEA: 0
   CHO: 0
@@ -1651,7 +1640,9 @@ MonoBehaviour:
   isPedroDead: 0
   receiveReward: 0
   streak: 0
+  softstreak: 0
   popped: 0
+  skins: []
 --- !u!4 &1329687066
 Transform:
   m_ObjectHideFlags: 0

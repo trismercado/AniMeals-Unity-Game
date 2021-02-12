@@ -7,7 +7,7 @@ using System;
 
 public class Player : MonoBehaviour
 {
- 
+    //pedro
     public float hunger;
         public float health;
         public int exp;
@@ -17,13 +17,12 @@ public class Player : MonoBehaviour
         // public List<Items> inventory;
         public List<FoodLog> foodIntake;
         public List<DailyIntake> dailyFoodIntake;
-        public DailyIntake dayLog;
-        // current skin the pet is using
+        public int currentSkinID;
 
         //Computations
-        public string weight;
-        public string height; 
-        public string activityLevel;
+        string weight;
+        string height; 
+        string activityLevel;
         public float BMI;
         public float TEA;
         public float CHO;
@@ -37,18 +36,21 @@ public class Player : MonoBehaviour
         public float PROIntake;
         public float FATIntake;
 
-        //
+        //messages and achievement
         public string assess;
         public string pedromsg1;
         public string pedromsg2;
         public bool isPedroDead;
         public bool receiveReward;
         public int streak;
-
+        public int softstreak;
         public bool popped;
 
         static Player isUnique;
         private string savePath;
+
+        //store
+        public List<Skin> skins; //includes pedro (default)
 
 
     void Awake() {
@@ -58,6 +60,7 @@ public class Player : MonoBehaviour
 
         isNewUser();
         isNewDay();
+        
 
         if(isUnique != null) {
             Destroy(this.gameObject);
@@ -65,11 +68,13 @@ public class Player : MonoBehaviour
             return;
         }
         isUnique = this;
-        DontDestroyOnLoad(this.gameObject);        
+        DontDestroyOnLoad(this.gameObject);  
+
     }
 
 
     void Update() {
+        
         IncreaseHunger(Time.deltaTime * 0.069444444444f / 60f);
     }
 
@@ -78,8 +83,13 @@ public class Player : MonoBehaviour
         CHOIntake += carbs;
         PROIntake += protein;
         FATIntake += fat;
-        foodIntake.Add(food); ////baka pwede to ireplace para diretso na sa daily foodlog
-        DecreaseHunger((cal/TEA)*100);
+        foodIntake.Add(food); 
+        // DecreaseHunger((cal/TEA)*100);
+        if (TEAIntake < TEA) DecreaseHunger((cal/(TEA-TEAIntake))*100); 
+        //the logged cal intake over the remaining cal u have to consume
+        else DecreaseHunger((cal/TEA)*100);
+        // //if cal intake is greater than the required just decrease hunger with regards to its cal requirement
+        // //at this point exceeding calorie intake should not have good benefits on pedro
         InsertInFoodLogs();
     }
 
@@ -88,6 +98,8 @@ public class Player : MonoBehaviour
         if (hunger >= 100f) {
             hunger = 100f;
             isPedroDead = true;
+            
+            popped = false;
         }
     } 
 
@@ -120,9 +132,10 @@ public class Player : MonoBehaviour
     public void Revive(){
         hunger = 0f;
         health = 100f;
-        coups -= 5;
+        coups -= 1;
         isPedroDead = false;
         streak = 0;
+        softstreak = 0;
         // assess = "Hey! I am back to life! I missed you!";
         pedromsg1 = "Hey! I am back to life! I missed you!";
         pedromsg2 = "...Don't let me die again ok?";
@@ -149,16 +162,6 @@ public class Player : MonoBehaviour
         BMI = float.Parse(weight)/ Mathf.Pow((float.Parse(height)/100), 2f);
         BMI = Mathf.Ceil(BMI * 10f) / 10f;
 
-        // //Assessment
-        // if (BMI < 18.5) {
-        //     Debug.Log("Underweight");
-        // } else if (BMI >= 18.5 && BMI <= 24.9) {
-        //     Debug.Log("Normal");
-        // } else if (BMI >= 25 && BMI <= 29.9) {
-        //     Debug.Log("Overweight");
-        // } else if (BMI >= 30) {
-        //     Debug.Log("Obese");
-        // }
         
         float actLevel = 1f;
         if (float.Parse(activityLevel) == 1) {
@@ -204,10 +207,10 @@ public class Player : MonoBehaviour
         string day = System.DateTime.Now.ToString("dd");
         if (PlayerPrefs.HasKey("lastDate")){
             if (day != Convert.ToDateTime(PlayerPrefs.GetString("lastDate")).ToString("dd")){
+                popped = false;
                 checkIntake();
                 Reset();
             } else {
-                receiveReward = false;
             }
         }
     }
@@ -221,8 +224,10 @@ public class Player : MonoBehaviour
         else {
             health=100f;
             exp=10;
-            coups=5;
             pedromsg1 = "My name is Pedro!" + "\n\n" + "만나서 반가워요!";
+            PopulateSkinList();
+            currentSkinID = 0;
+            popped = false;
         }
     }
 
@@ -242,6 +247,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    //files
     public void SaveData() {
         var save = new Save()
         {
@@ -250,13 +256,17 @@ public class Player : MonoBehaviour
             exp = this.exp,
             level = this.level,
             coups = this.coups,
+            currentSkinID = this.currentSkinID,
             assess = this.assess,
             pedromsg1 = this.pedromsg1,
             pedromsg2 = this.pedromsg2,
+            popped = this.popped,
             achieve = this.achieve,
             streak = this.streak,
+            softstreak = this.softstreak,
             foodIntake = this.foodIntake,
             dailyFoodIntake = this.dailyFoodIntake,
+            skins = this.skins,
             TEAIntake = this.TEAIntake,
             CHOIntake = this.CHOIntake,
             PROIntake = this.PROIntake,
@@ -272,7 +282,7 @@ public class Player : MonoBehaviour
         string date = System.DateTime.Now.ToString();
         PlayerPrefs.SetString("lastDate", date);
         
-        Debug.Log("Data Saved");
+        // Debug.Log("Data Saved");
     }
 
     public void LoadData() {
@@ -291,20 +301,24 @@ public class Player : MonoBehaviour
             exp = save.exp;
             level = save.level;
             coups = save.coups;
+            currentSkinID = save.currentSkinID;
             assess = save.assess;
             pedromsg1 = save.pedromsg1;
             pedromsg2 = save.pedromsg2;
             achieve = save.achieve;
             streak = save.streak;
+            softstreak = save.softstreak;
+            popped = save.popped;
             foodIntake = save.foodIntake;
             dailyFoodIntake = save.dailyFoodIntake;
+            skins = save.skins;
             TEAIntake = save.TEAIntake;
             CHOIntake = save.CHOIntake;
             PROIntake = save.PROIntake;
             FATIntake = save.FATIntake;
 
  
-            Debug.Log("Data Loaded");
+            // Debug.Log("Data Loaded");
         }
         else
         {
@@ -316,6 +330,7 @@ public class Player : MonoBehaviour
         File.Delete(savePath);
     }
 
+    //app activities
     void OnApplicationQuit() {
         SaveData();
     }
@@ -325,12 +340,14 @@ public class Player : MonoBehaviour
         if (isPaused) {
             SaveData();
         } else {
-            isNewUser();
+            fromLastAccess();
+            // isNewUser();
             isNewDay();            
         }
         
     }
 
+    //assess food intake
     public void checkIntake(){
         assess = "";
         pedromsg1 = "";
@@ -344,16 +361,25 @@ public class Player : MonoBehaviour
             pedromsg2 = ""; 
             receiveReward = true;
             streak += 1;
+            softstreak += 1;
         } if (!a && !b && !c && !d) {
             pedromsg1 = "Remember: " + pedromsg1;
             pedromsg2 = "You didn't reach all the goal nutrients yesterday... So when you were gone my tummy started feeling weird... Let's eat better today so we can heal fast, ok?"; 
             Damage(20);
             streak = 0; 
+            softstreak = 0;
         } else if (!a || !b || !c || !d) {
             pedromsg1 = "Remember: " + pedromsg1;
-            pedromsg2 = pedromsg2 + "\n" + "I'm sure there are plenty of good food for our body. Let's eat better today!";
+            pedromsg2 = pedromsg2 + "\n\n" + "I'm sure there are plenty of good food for our body. Let's eat better today!";
             Damage(20);
             streak = 0; 
+
+            if (foodIntake.Count > 3) {
+                softstreak += 1;
+                Debug.Log(softstreak);
+            } else {
+                softstreak = 0;
+            }
         }
 
         pedromsg1 = pedromsg1 + "\n\n" + pedromsg2;
@@ -361,14 +387,12 @@ public class Player : MonoBehaviour
 
     public bool CheckCarbs() {
         if (CHOIntake < (TEA*0.55)/4) {
-            // //  assess += "CHO not enough. ";
              pedromsg1 += "\n\t" + "Carbohydrates affect our blood sugar and energy.";
-             pedromsg2 += " Also, we didn’t eat enough carbs yesterday, my head is starting to hurt huhu ";
+             pedromsg2 += " We didn’t eat enough carbs yesterday, my head is starting to hurt huhu ";
              return false;
         } else if (CHOIntake > (TEA*0.70)/4) {
-            //  assess += "CHO not within range. ";
              pedromsg1 += "\n\t" + "Carbohydrates affect our blood sugar and energy.";
-             pedromsg2 += " And there were not enough calories yesterday, I’m feeling a little weak today… :( Hope you feel better than I do.";
+             pedromsg2 += " I’m feeling a bit tired today. Maybe it’s because we ate too much carbs yesterday? :( ";
              return false;
         } else {
             return true;
@@ -378,11 +402,11 @@ public class Player : MonoBehaviour
     public bool CheckPro() {
         if (PROIntake < (TEA*0.10)/4) {
             pedromsg1 += "\n\t" + "Protein is used to create the building blocks of the body.";
-            pedromsg2 += " And, I’m feeling so weak today. I think it’s because you didn’t eat enough protein yesterday.";
+            pedromsg2 += " I’m feeling so weak today. I think it’s because you didn’t eat enough protein yesterday.";
             return false;
         } else if (PROIntake > PRO){
             pedromsg1 += "\n\t" + "Protein is used to create the building blocks of the body.";
-            pedromsg2 += " Also, we ate too much protein yesterday, I feel nauseated and exhausted :(";
+            pedromsg2 += " We ate too much protein yesterday, I feel nauseated and exhausted. :(";
             return false;
         } else {
             return true;
@@ -391,12 +415,12 @@ public class Player : MonoBehaviour
 
     public bool CheckFats() {
         if (FATIntake < FAT) {
-            pedromsg1 += "\n\t" + "Fat is our body’s fuel source, and is the major storage of energy in the body.";
-            pedromsg2 += " And we didn’t eat enough fats. Fats are good too, you know… Now, I’m feeling a bit stressed. :(";
+            pedromsg1 += "\n\t" + "Fat is our body’s fuel source, the major storage of energy in the body.";
+            pedromsg2 += " We didn’t eat enough fats. Fats are good too, you know… Now, I’m feeling a bit stressed. :(";
             return false;
         } else if (FATIntake > (TEA*0.30)/9) {
-            pedromsg1 += "\n\t" + "Fat is our body’s fuel source, and is the major storage of energy in the body.";
-            pedromsg2 += " Also, we had too much fats. I feel like my blood pressure is up there somewhere…";
+            pedromsg1 += "\n\t" + "Fat is our body’s fuel source, the major storage of energy in the body.";
+            pedromsg2 += " We had too much fats. I feel like my blood pressure is up there somewhere…";
             return false;
         } else {
             return true;
@@ -406,11 +430,11 @@ public class Player : MonoBehaviour
     public bool CheckCal () {
         if (TEAIntake < 1500) {
             pedromsg1 += "\n\t" + "Our body needs calories for energy.";
-            pedromsg2 += " And there were not enough calories yesterday, I’m feeling a little weak today… :(";
+            pedromsg2 += " There were not enough calories yesterday, I’m feeling a little weak today… :(";
             return false;
         } else if (TEAIntake > TEA) {
             pedromsg1 += "\n\t" + "Our body needs calories for energy.";
-            pedromsg2 += " And, I’m feeling a bit tired today. Maybe it’s because we ate too much carbs yesterday :( ";
+            pedromsg2 += "  I had WAAAAY too many calories, I’m feeling a little bloated… How are you?";
             return false;
         } else {
             return true;
@@ -459,6 +483,42 @@ public class Player : MonoBehaviour
         //if the same date, rewrite mo yung dailyintake
         //if not, add to the list
     }
+
+    //store
+    public void PopulateSkinList() {
+        skins.Add(new Skin(0, "Pedro", "Your friend forever!", 0, true, true));
+        skins.Add(new Skin(1, "Space Suit", "I look cool, right?", 7, false, false));
+        skins.Add(new Skin(2, "Choi Seungcheol", "Hi! I'm general leader S.Coups.", 12, false, false));
+        skins.Add(new Skin(3, "Kim Mingyu", "I'm so tired. I'm so tired. I'm so tired.", 20, false, false));
+        skins.Add(new Skin(4, "Boo Seungkwan", "Let me introduce yourself...", 40, false, false));
+
+    }
+
+    public void SetChar(int i) {
+        //get selected character from the store using id or index 
+        //get title
+        // if (skin[i].id == 0) {
+        //     currentChar_happy = Resources.Load<Sprite>("PedroHappy");
+        //     currentChar_sad = Resources.Load<Sprite>("PedroSad");
+        //     currentChar_sick = Resources.Load<Sprite>("PedroSick");
+        // }
+        
+        //else if id = 1 (space suit)
+
+        //in the game scene use this sprite to show in the checkhealth function
+    }
+
+    public void SetDiscounts() {
+        //check if the current date is equal to date of registering + 14 days
+        //if yes, set 50% sale on all skins
+        //dont forget to set price to float muna
+        // foreach (var i in skins) {
+        //     i.price = i.price - (i.price*0.50);
+        // }
+        //else bring back to their old price
+    }
+
+
 
 
 

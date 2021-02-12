@@ -1191,20 +1191,7 @@ MonoBehaviour:
   achieve: []
   foodIntake: []
   dailyFoodIntake: []
-  dayLog:
-    foodLogsForTheDay: []
-    dateLogged: 
-    TEA: 0
-    CHO: 0
-    PRO: 0
-    FAT: 0
-    TEAIntake: 0
-    CHOIntake: 0
-    PROIntake: 0
-    FATIntake: 0
-  weight: 
-  height: 
-  activityLevel: 
+  currentSkinID: 0
   BMI: 0
   TEA: 0
   CHO: 0
@@ -1221,7 +1208,9 @@ MonoBehaviour:
   isPedroDead: 0
   receiveReward: 0
   streak: 0
+  softstreak: 0
   popped: 0
+  skins: []
 --- !u!4 &523166032
 Transform:
   m_ObjectHideFlags: 0
@@ -3901,7 +3890,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0.51, y: 0}
+  m_AnchoredPosition: {x: 0.8, y: 0.5}
   m_SizeDelta: {x: 144.85762, y: 18.06715}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1821668416

@@ -9,6 +9,8 @@ public class Save {
     public int level;
     public int coups;
     public int streak;
+    public int softstreak;
+    public bool popped;
     public string assess;
     public string pedromsg1;
     public string pedromsg2;
@@ -16,6 +18,8 @@ public class Save {
     // public List<Items> inventory;
     public List<FoodLog> foodIntake;
     public List<DailyIntake> dailyFoodIntake;
+    public List<Skin> skins;
+    public int currentSkinID;
     // current skin the pet is using
 
     //Computations
