@@ -340,8 +340,7 @@ public class Player : MonoBehaviour
         if (isPaused) {
             SaveData();
         } else {
-            fromLastAccess();
-            // isNewUser();
+            isNewUser();
             isNewDay();            
         }
         

@@ -12,7 +12,7 @@ public class MainMenuScene : MonoBehaviour
     void Awake(){
         
 
-        if (PlayerPrefs.GetInt("isRegisteredKeyName") == 1) {
+        if (PlayerPrefs.HasKey("isRegisteredKeyName")) {
             SceneManager.LoadScene(3);
         } else {
             savePath = Application.persistentDataPath + "/gamesave.anmls";

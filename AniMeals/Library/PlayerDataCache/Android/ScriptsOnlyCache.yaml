@@ -382,6 +382,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11320}
     - Class: 114
+      Script: {instanceID: 11450}
+    - Class: 114
       Script: {instanceID: 11488}
     - Class: 114
       Script: {instanceID: 11522}
@@ -393,6 +395,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 11612}
     - Class: 114
       Script: {instanceID: 11704}
+    - Class: 114
+      Script: {instanceID: 11810}
     - Class: 114
       Script: {instanceID: 11866}
     - Class: 114
@@ -410,7 +414,11 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12882}
     - Class: 114
+      Script: {instanceID: 13256}
+    - Class: 114
       Script: {instanceID: 13272}
+    - Class: 114
+      Script: {instanceID: 13286}
     - Class: 114
       Script: {instanceID: 13302}
     - Class: 115
@@ -473,13 +481,13 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13272}
     - Class: 114
-      Script: {instanceID: 14520}
+      Script: {instanceID: 73514}
     - Class: 114
-      Script: {instanceID: 14524}
+      Script: {instanceID: 73516}
     - Class: 114
-      Script: {instanceID: 14530}
+      Script: {instanceID: 73518}
     - Class: 114
-      Script: {instanceID: 14532}
+      Script: {instanceID: 73520}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -524,9 +532,13 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11582}
     - Class: 114
+      Script: {instanceID: 11704}
+    - Class: 114
       Script: {instanceID: 11866}
     - Class: 114
       Script: {instanceID: 11908}
+    - Class: 114
+      Script: {instanceID: 12126}
     - Class: 114
       Script: {instanceID: 12358}
     - Class: 114
@@ -823,7 +835,7 @@ ScriptsOnlyBuild:
     className: TMP_InputField
   - hash:
       serializedVersion: 2
-      Hash: 8c4f9faaac91d1f918ff97ec045bf54a
+      Hash: 343610c2c22165b8851b2fb9a6d5443d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LogsScene

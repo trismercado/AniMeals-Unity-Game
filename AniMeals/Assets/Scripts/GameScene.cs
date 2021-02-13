@@ -94,17 +94,14 @@ public class GameScene : MonoBehaviour
     }
 
     public void OnAddFoodClick() {
-        Debug.Log("Add Food was clicked!");
         SceneManager.LoadScene(4);
     }
 
     public void OnAchievementClick(){
-        // Debug.Log("Achievement was clicked!");
         SceneManager.LoadScene(6);
     }
     
     public void OnStoreClick() {
-        Debug.Log("Store was clicked!");
         SceneManager.LoadScene(7);
     }
 
@@ -241,7 +238,8 @@ public class GameScene : MonoBehaviour
                     gs.coups += 5;
                     gs.popped = true;
                 }; 
-                pop.CenterPopUp("Hi, I'm Pedro!", "Thank you for coming in this journey with me! Here, have 5 coups, you might need them later...", "OK", rewardcolor, action);
+                pop.CenterPopUp("Hi, I'm Pedro!", "Thank you for coming in this journey with me! Here, have 5 coups, you might need them later... I also calculated your body mass index and ideal body weight. You can check your profile for that. It's right there at the top left corner! :)", "OK", rewardcolor, action);
+
                 gs.assess = "Please take care of me... no, I mean us... is that right? Hmm, basically I eat what you eat... so eat well and let's stay healthy!";
             }
         } 

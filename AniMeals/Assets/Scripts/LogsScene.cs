@@ -20,32 +20,26 @@ public class LogsScene : MonoBehaviour
 
     public GameObject breakfast;
     public Transform breakfastHolder;
-    public GameObject lunch;
-    public Transform lunchHolder;
-    public GameObject snack;
-    public Transform snackHolder;
-    public GameObject dinner;
-    public Transform dinnerHolder;
-
+    GameObject bfast;
+    public GameObject[] mealCat;
+    
     public Text TEAIntake;
     public Text CHOIntake;
     public Text FATIntake;
     public Text PROIntake;
 
-    public RectTransform _rootRectTransform;
-    public VerticalLayoutGroup vlg;
-
     public BarSlider calSlider;
     public BarSlider choSlider;
     public BarSlider proSlider;
     public BarSlider fatsSlider;
-
+    
+    public Dropdown drop;
+    public RectTransform _rootRectTransform;
+    
     TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-
-    GameObject bfast;
-    GameObject lnch;
-    GameObject snck;
-    GameObject dnnr;
+    
+    string meal;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +53,8 @@ public class LogsScene : MonoBehaviour
         gs = go.GetComponent<Player>();
 
         current = today;
-
+        drop.value = 0;
+        meal = "Breakfast";
         int index = gs.dailyFoodIntake.FindIndex(a => a.dateLogged.Equals(current.ToString()));
 
         if (index >= 0) {
@@ -84,10 +79,15 @@ public class LogsScene : MonoBehaviour
     }
 
     public void DecreaseDate() {
-        current = current.AddDays(-1);
+        DateTime firstDay = Convert.ToDateTime(PlayerPrefs.GetString("isRegisteredKeyName"));
 
+        if (current <= firstDay) {
+
+        } else {
+            current = current.AddDays(-1);
+        }
         int index = gs.dailyFoodIntake.FindIndex(a => a.dateLogged.Equals(current.ToString()));
-
+        
         if (index >= 0) {
             Log = gs.dailyFoodIntake[index];
             ReplaceFoodLogs();
@@ -119,6 +119,20 @@ public class LogsScene : MonoBehaviour
         
     }
 
+    public void MealDropDown(int val) {
+        if (val == 0) {
+            meal = "Breakfast";
+        } else if (val == 1) {
+            meal = "Lunch";
+        } else if (val == 2) {
+            meal = "Snack";
+        } else if (val == 3) {
+            meal = "Dinner";
+        } 
+        ReplaceMealCategory(val);
+        DisplayFoodLogs();
+    }
+
     public void DisplayFoodLogs() {
         TEAIntake.text = Log.TEAIntake + "kcal/ \n" + Log.TEA + "kcal";
         CHOIntake.text = Log.CHOIntake + "g/ \n" + Log.CHO + "g";
@@ -132,28 +146,14 @@ public class LogsScene : MonoBehaviour
         proSlider.SetCurrentVal(Log.PROIntake);
         fatsSlider.SetMaxValue(Log.FAT);
         fatsSlider.SetCurrentVal(Log.FATIntake);
+
         foreach(var foodLog in Log.foodLogsForTheDay) {
-            if (foodLog.mealCategory.Equals("Breakfast")) {
+            if (foodLog.mealCategory.Equals(meal)) {
                 bfast = Instantiate(breakfast, breakfastHolder);
                 bfast.transform.GetChild(0).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.foodName);
                 bfast.transform.GetChild(1).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.serving.ToString());
                 bfast.transform.GetChild(2).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.calories.ToString()) + " kcal";
-            } else if (foodLog.mealCategory.Equals("Lunch")) {
-                lnch = Instantiate(lunch, lunchHolder);
-                lnch.transform.GetChild(0).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.foodName); 
-                lnch.transform.GetChild(1).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.serving.ToString());
-                lnch.transform.GetChild(2).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.calories.ToString()) + " kcal";
-            } else if (foodLog.mealCategory.Equals("Snack")) {
-                snck =Instantiate(snack, snackHolder);
-                snck.transform.GetChild(0).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.foodName);
-                snck.transform.GetChild(1).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.serving.ToString());
-                snck.transform.GetChild(2).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.calories.ToString()) + " kcal";
-            } else if (foodLog.mealCategory.Equals("Dinner")) {
-                dnnr = Instantiate(dinner, dinnerHolder);
-                dnnr.transform.GetChild(0).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.foodName);
-                dnnr.transform.GetChild(1).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.serving.ToString());
-                dnnr.transform.GetChild(2).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.calories.ToString()) + " kcal";
-            }
+            } 
         }
         LayoutRebuilder.ForceRebuildLayoutImmediate(_rootRectTransform);
     }
@@ -177,6 +177,21 @@ public class LogsScene : MonoBehaviour
         }
         
     }
+
+    public void ReplaceMealCategory(int temp) {
+        var clones = GameObject.FindGameObjectsWithTag("item");
+        foreach (var clone in clones){
+            Destroy(clone);
+        }
+        for (int i=0; i < 4; i++) {
+            if (temp == i) {
+                mealCat[i].SetActive(true);
+            } else {
+                mealCat[i].SetActive(false);
+            }
+        }
+    }
+
 
 }
 

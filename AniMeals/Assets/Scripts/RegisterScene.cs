@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 public class RegisterScene : MonoBehaviour
 {
@@ -111,7 +112,7 @@ public class RegisterScene : MonoBehaviour
             PlayerPrefs.SetString("activityLevelKeyName", activityLevel);
 
             //Register once only
-            PlayerPrefs.SetInt("isRegisteredKeyName", 1);
+            PlayerPrefs.SetString("isRegisteredKeyName", DateTime.Today.ToString());
 
             SceneManager.LoadScene(3);
         }       

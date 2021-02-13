@@ -740,10 +740,10 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  cloudProjectId: 8fed03a3-3de1-4cbb-bc48-4c8e856e1b8c
+  cloudProjectId: 
   framebufferDepthMemorylessMode: 0
-  projectName: AniMeals (1)
-  organizationId: beamercado937
+  projectName: 
+  organizationId: 
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
