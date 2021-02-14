@@ -101,9 +101,6 @@ public class RegisterScene : MonoBehaviour
 
     public void OnSaveClick()
     {
-        // Save Info
-        // Debug.Log("Save was clicked!");
-
         //Saving Info
         if (CheckEntries()) {
             PlayerPrefs.SetString("nameKeyName", name);

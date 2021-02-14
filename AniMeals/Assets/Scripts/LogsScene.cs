@@ -36,10 +36,13 @@ public class LogsScene : MonoBehaviour
     public Dropdown drop;
     public RectTransform _rootRectTransform;
     
+    public Button nxtBtn;
+    public Button prevBtn;
+
     TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
     
     string meal;
-    
+    DateTime firstDay;
 
     // Start is called before the first frame update
     void Start()
@@ -63,7 +66,6 @@ public class LogsScene : MonoBehaviour
         } else {
             Debug.Log("No logs.");
         }
-
     }
 
     // Update is called once per frame
@@ -71,7 +73,20 @@ public class LogsScene : MonoBehaviour
     {
         dateText.text = current.ToString("dd MMM yyyy").ToUpper();
 
-        
+        if (today == Convert.ToDateTime(PlayerPrefs.GetString("isRegisteredKeyName"))) {
+            prevBtn.gameObject.SetActive(false);
+            nxtBtn.gameObject.SetActive(false);
+        } else if (current == Convert.ToDateTime(PlayerPrefs.GetString("isRegisteredKeyName"))) {
+            nxtBtn.gameObject.SetActive(true);
+            prevBtn.gameObject.SetActive(false);
+        } else if (current == today) {
+            nxtBtn.gameObject.SetActive(false);
+            prevBtn.gameObject.SetActive(true);
+        } else {
+            nxtBtn.gameObject.SetActive(true);
+            prevBtn.gameObject.SetActive(true);
+
+        }
     }
 
     public void OnBackClick() {
@@ -80,12 +95,9 @@ public class LogsScene : MonoBehaviour
 
     public void DecreaseDate() {
         DateTime firstDay = Convert.ToDateTime(PlayerPrefs.GetString("isRegisteredKeyName"));
+        
+        current = current.AddDays(-1);
 
-        if (current <= firstDay) {
-
-        } else {
-            current = current.AddDays(-1);
-        }
         int index = gs.dailyFoodIntake.FindIndex(a => a.dateLogged.Equals(current.ToString()));
         
         if (index >= 0) {
@@ -100,11 +112,7 @@ public class LogsScene : MonoBehaviour
     }
 
     public void IncreaseDate() {
-        if (current >= today) {
-
-        } else {
-            current = current.AddDays(1);
-        }
+        current = current.AddDays(1);
 
         int index = gs.dailyFoodIntake.FindIndex(a => a.dateLogged.Equals(current.ToString()));
 

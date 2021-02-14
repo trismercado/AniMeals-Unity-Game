@@ -9,7 +9,7 @@ public class Skin
     public int id;
     public string title;
     public string description;
-    public int price;
+    public float price;
     public bool isBought;
     public bool isEquipped;
     //add animations that comes with

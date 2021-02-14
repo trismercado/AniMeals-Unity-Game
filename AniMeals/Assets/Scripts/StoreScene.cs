@@ -11,17 +11,17 @@ public class StoreScene : MonoBehaviour
     public Skin charSkin;
     public int index;
 
-    public Image pedroImg;
-    public Image ssImg;
-    public Image choiImg;
-    public Image kimImg;
-    public Image booImg;
+    public GameObject[] skins;
 
     public Text skinTitle;
     public Text skinDescrp;
-    // public Text price;
+    public Text price;
     public Text coupsText;
+    public Text BtnText;
 
+    public Button Btn;
+    public Button nxtBtn;
+    public Button prvBtn;
 
     public Image pageCounter1;
     public Image pageCounter2;
@@ -43,16 +43,22 @@ public class StoreScene : MonoBehaviour
         gs = go.GetComponent<Player>();
 
         index = 0;
-
-        DisplaySkins();
-        coupsText.text = gs.coups.ToString();
-        // CheckIfPurchased();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        coupsText.text = gs.coups.ToString();
+        DisplaySkins();
         PageCounter();
+
+        if (index == 0) {
+            prvBtn.gameObject.SetActive(false);
+        } else if (index == 4) {
+            nxtBtn.gameObject.SetActive(false);
+        } else {
+            prvBtn.gameObject.SetActive(true);
+            nxtBtn.gameObject.SetActive(true);
+        }
     }
 
     public void OnBackClick()
@@ -66,106 +72,73 @@ public class StoreScene : MonoBehaviour
     {
         index++;
         if (index < 5) {
-            DisplaySkins();
         } else {
             index = 4;
-            //make button non-interactable
         }
-
     }
 
     public void OnPrevClick()
     {
         index--;
         if (index >= 0) {
-            DisplaySkins();
         } else {
             index = 0;
-            //make button non-interactable
         }
-
-    }
-
-    public void CheckIfPurchased(){
-        
     }
 
     public void DisplaySkins() {
-        // Debug.Log(gs.skins[index].title);
 
         var currentSkin = gs.skins[index];
 
-        //show image
-        if (index == 0) {
-            pedroImg.enabled = true;
-            ssImg.enabled = false;
-            choiImg.enabled = false;
-            kimImg.enabled = false;
-            booImg.enabled = false;
-        } else if (index == 1) {
-            pedroImg.enabled = false;
-            ssImg.enabled = true;
-            choiImg.enabled = false;
-            kimImg.enabled = false;
-            booImg.enabled = false;
-        } else if (index == 2) {
-            pedroImg.enabled = false;
-            ssImg.enabled = false;
-            choiImg.enabled = true;
-            kimImg.enabled = false;
-            booImg.enabled = false;
-        } else if (index == 3) {
-            pedroImg.enabled = false;
-            ssImg.enabled = false;
-            choiImg.enabled = false;
-            kimImg.enabled = true;
-            booImg.enabled = false;
-        } else if (index == 4) {
-            pedroImg.enabled = false;
-            ssImg.enabled = false;
-            choiImg.enabled = false;
-            kimImg.enabled = false;
-            booImg.enabled = true;
+        //show image, title, description, price
+        for (int i = 0; i < 5; i++) {
+            if (i == index) {
+                skins[i].SetActive(true);
+            } else {
+                skins[i].SetActive(false);
+            }
         }
-        //show title
         skinTitle.text = currentSkin.title; 
-        //show description
         skinDescrp.text = currentSkin.description; 
-
-
+        price.text = currentSkin.price.ToString();
 
         //buy and select buttons
-        if (!currentSkin.isBought) { //if item is not yet bought
-            //button text set to "Buy"
+        if (!currentSkin.isBought) { 
             if (gs.coups >= currentSkin.price) {
-                //button for buy shows since user can afford
-                //show price
-                //interactable = true
+                BtnText.text = "Buy";
+                Btn.interactable = true;
             } else {
-                //show price
-                //interactable = false
+                BtnText.text = "Not enough coups";
+                Btn.interactable = false;
             }
         }  else if (currentSkin.isBought) {
-            //button text set to "select"
             if (!currentSkin.isEquipped) {
-                //button to select skin
-                //interactable = true
+                BtnText.text = "Equip";
+                Btn.interactable = true;
             } else {
-                //interactable = false
+                BtnText.text = "Equipped";
+                Btn.interactable = false;
+
             }
+        }
+    }
+
+    public void CheckIfPurchasedOrSelect(){
+        if (!gs.skins[index].isBought) {
+            PurchaseSkin();
+        } else {
+            SelectSkin();
         }
     }
 
     public void PurchaseSkin() {
-        if (gs.coups > gs.skins[index].price) { //can be removed but for added security wag nalang lol
-            gs.coups = gs.coups - gs.skins[index].price;
+        if (gs.coups > (int)gs.skins[index].price) { //can be removed but for added security wag nalang lol
+            gs.coups = gs.coups - (int)gs.skins[index].price;
             gs.skins[index].isBought = true;
-            Debug.Log(gs.skins[index].title + ": " + gs.skins[index].isBought);
         }         
     }
 
     public void SelectSkin() {
-        
         foreach (var i in gs.skins) {
             if (i == gs.skins[index]) {
                 i.isEquipped = true;
@@ -209,4 +182,5 @@ public class StoreScene : MonoBehaviour
             pageCounter5.color = currentColor;
         } 
     }
+
 }

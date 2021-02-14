@@ -70,7 +70,6 @@ public class FoodLogScene : MonoBehaviour
 
     // Start is called before the first frame update
     void Start () {
-        // servingText.text = GetComponent<Text>();  // if you want to reference it by code - tag it if you have several texts
         serving = 1f;
         cal = 0f;
         carbs = 0f;

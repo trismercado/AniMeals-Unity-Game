@@ -239,8 +239,6 @@ public class GameScene : MonoBehaviour
                     gs.popped = true;
                 }; 
                 pop.CenterPopUp("Hi, I'm Pedro!", "Thank you for coming in this journey with me! Here, have 5 coups, you might need them later... I also calculated your body mass index and ideal body weight. You can check your profile for that. It's right there at the top left corner! :)", "OK", rewardcolor, action);
-
-                gs.assess = "Please take care of me... no, I mean us... is that right? Hmm, basically I eat what you eat... so eat well and let's stay healthy!";
             }
         } 
         
@@ -274,6 +272,8 @@ public class GameScene : MonoBehaviour
             achieveText.text = "No achievements yet";
         }
     }
+
+
 
 
 

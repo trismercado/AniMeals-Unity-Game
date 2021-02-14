@@ -14,7 +14,6 @@ public class Player : MonoBehaviour
         public int level{ get; set; }
         public int coups;
         public List<string> achieve;
-        // public List<Items> inventory;
         public List<FoodLog> foodIntake;
         public List<DailyIntake> dailyFoodIntake;
         public int currentSkinID;
@@ -45,6 +44,7 @@ public class Player : MonoBehaviour
         public int streak;
         public int softstreak;
         public bool popped;
+        // public bool isDiscounted;
 
         static Player isUnique;
         private string savePath;
@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
         }
         isUnique = this;
         DontDestroyOnLoad(this.gameObject);  
-
+        // SetDiscounts();
     }
 
 
@@ -204,14 +204,17 @@ public class Player : MonoBehaviour
     
     //Reset intake for new day
     public void isNewDay() {
-        string day = System.DateTime.Now.ToString("dd");
-        if (PlayerPrefs.HasKey("lastDate")){
-            if (day != Convert.ToDateTime(PlayerPrefs.GetString("lastDate")).ToString("dd")){
+        if (dailyFoodIntake.Count != 0) {
+            if (DateTime.Today.ToString() != dailyFoodIntake[(dailyFoodIntake.Count - 1)].dateLogged)
+            {
                 popped = false;
                 checkIntake();
                 Reset();
+                InsertInFoodLogs();
             } else {
             }
+        } else {
+            InsertInFoodLogs();
         }
     }
 
@@ -477,44 +480,35 @@ public class Player : MonoBehaviour
                         FATIntake
                     ));
         }
-        
-        //check mo yung date today 
-        //if the same date, rewrite mo yung dailyintake
-        //if not, add to the list
     }
 
     //store
     public void PopulateSkinList() {
         skins.Add(new Skin(0, "Pedro", "Your friend forever!", 0, true, true));
-        skins.Add(new Skin(1, "Space Suit", "I look cool, right?", 7, false, false));
+        skins.Add(new Skin(1, "Space Suit", "I look cool, right?", 8, false, false));
         skins.Add(new Skin(2, "Choi Seungcheol", "Hi! I'm general leader S.Coups.", 12, false, false));
         skins.Add(new Skin(3, "Kim Mingyu", "I'm so tired. I'm so tired. I'm so tired.", 20, false, false));
         skins.Add(new Skin(4, "Boo Seungkwan", "Let me introduce yourself...", 40, false, false));
 
     }
 
-    public void SetChar(int i) {
-        //get selected character from the store using id or index 
-        //get title
-        // if (skin[i].id == 0) {
-        //     currentChar_happy = Resources.Load<Sprite>("PedroHappy");
-        //     currentChar_sad = Resources.Load<Sprite>("PedroSad");
-        //     currentChar_sick = Resources.Load<Sprite>("PedroSick");
-        // }
-        
-        //else if id = 1 (space suit)
-
-        //in the game scene use this sprite to show in the checkhealth function
-    }
-
     public void SetDiscounts() {
-        //check if the current date is equal to date of registering + 14 days
-        //if yes, set 50% sale on all skins
-        //dont forget to set price to float muna
-        // foreach (var i in skins) {
-        //     i.price = i.price - (i.price*0.50);
-        // }
-        //else bring back to their old price
+        //do this only once
+        //return to old price if not a sale day (you can set it manually naman since 4 lang yung items)
+
+        DateTime today = DateTime.Today;
+        DateTime regDate = Convert.ToDateTime(PlayerPrefs.GetString("isRegisteredKeyName"));
+
+        if (regDate.AddDays(1) == today) {
+            Debug.Log("Sale today!");
+            for (int i = 0; i < 5; i++) {
+                skins[i].price = skins[i].price - (skins[i].price*0.5f);
+                Debug.Log(skins[i].title + ": " + skins[i].price);
+                // isDiscounted = true;
+            }
+        } else {
+            Debug.Log("Sale on: " + regDate.AddDays(1).ToString());
+        }
     }
 
 
