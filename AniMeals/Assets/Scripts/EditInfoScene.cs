@@ -20,6 +20,8 @@ public class EditInfoScene : MonoBehaviour
 
     public Dropdown drop;
 
+    public Button saveBtn;
+
     private GameObject go;
     private Player gs;
 
@@ -50,6 +52,8 @@ public class EditInfoScene : MonoBehaviour
         name = inputName.text;
         weight = inputWeight.text;
         height = inputHeight.text;
+        
+        saveBtn.interactable = CheckEntries();
     }
 
     public void OnBackClick() {

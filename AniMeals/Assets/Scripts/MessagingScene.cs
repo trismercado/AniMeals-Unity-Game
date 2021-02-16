@@ -22,9 +22,13 @@ public class MessagingScene : MonoBehaviour
             }
         gs = go.GetComponent<Player>();
 
+        
+        // secondPart.text = gs.pedromsg2;
+    }
+
+    void Update() {
         greeting.text = "Dear " + PlayerPrefs.GetString("nameKeyName") + ",";
         firstPart.text = gs.pedromsg1;
-        // secondPart.text = gs.pedromsg2;
     }
 
     public void OnBackClick()

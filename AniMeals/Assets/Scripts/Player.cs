@@ -44,6 +44,7 @@ public class Player : MonoBehaviour
         public int streak;
         public int softstreak;
         public bool popped;
+        public bool showPedroDead;
         // public bool isDiscounted;
 
         static Player isUnique;
@@ -59,7 +60,6 @@ public class Player : MonoBehaviour
         savePath = Application.persistentDataPath + "/gamesave.anmls";
 
         isNewUser();
-        isNewDay();
         
 
         if(isUnique != null) {
@@ -74,6 +74,7 @@ public class Player : MonoBehaviour
 
 
     void Update() {
+        isNewDay();
         
         IncreaseHunger(Time.deltaTime * 0.069444444444f / 60f);
     }
@@ -83,14 +84,14 @@ public class Player : MonoBehaviour
         CHOIntake += carbs;
         PROIntake += protein;
         FATIntake += fat;
-        foodIntake.Add(food); 
+        // foodIntake.Add(food); 
         // DecreaseHunger((cal/TEA)*100);
         if (TEAIntake < TEA) DecreaseHunger((cal/(TEA-TEAIntake))*100); 
         //the logged cal intake over the remaining cal u have to consume
         else DecreaseHunger((cal/TEA)*100);
         // //if cal intake is greater than the required just decrease hunger with regards to its cal requirement
         // //at this point exceeding calorie intake should not have good benefits on pedro
-        InsertInFoodLogs();
+        InsertInFoodLogs(food);
     }
 
     public void IncreaseHunger(float amt) {
@@ -98,8 +99,8 @@ public class Player : MonoBehaviour
         if (hunger >= 100f) {
             hunger = 100f;
             isPedroDead = true;
-            
-            popped = false;
+        } else {
+            isPedroDead = false;
         }
     } 
 
@@ -126,19 +127,19 @@ public class Player : MonoBehaviour
         if (health <= 0f) {
             health = 0f;
             isPedroDead = true;
+        } else {
+            isPedroDead = false;
         }
     }
 
     public void Revive(){
+        isPedroDead = false;
         hunger = 0f;
         health = 100f;
         coups -= 1;
-        isPedroDead = false;
         streak = 0;
         softstreak = 0;
-        // assess = "Hey! I am back to life! I missed you!";
-        pedromsg1 = "Hey! I am back to life! I missed you!";
-        pedromsg2 = "...Don't let me die again ok?";
+        pedromsg1 = "Hey! I am back to life! I missed you! \n \n ...Don't let me die again ok?";
     }
 
     public void Reset(){
@@ -207,14 +208,14 @@ public class Player : MonoBehaviour
         if (dailyFoodIntake.Count != 0) {
             if (DateTime.Today.ToString() != dailyFoodIntake[(dailyFoodIntake.Count - 1)].dateLogged)
             {
+                //what we want: to be able to get the daily reward and check the intake 
+                //even when the app is open and the app prgoresses to the next day 
                 popped = false;
                 checkIntake();
-                Reset();
-                InsertInFoodLogs();
-            } else {
+                CreateFoodLog();
             }
         } else {
-            InsertInFoodLogs();
+            CreateFoodLog();
         }
     }
 
@@ -227,7 +228,7 @@ public class Player : MonoBehaviour
         else {
             health=100f;
             exp=10;
-            pedromsg1 = "My name is Pedro!" + "\n\n" + "만나서 반가워요!";
+            pedromsg1 = "My name is Pedro and this is AniMeals! I hope you'll enjoy your time with me! Hmm... To tell you a little more about myself... I usually like anime, movies, and hmm what else... OH! I LOVE HARRY POTTER!!!! My makers thought I'll fit right in with Hufflepuff! Can you believe them? Haha! I personally think I'm more of a Gryffindor, to be honest. Also, I was born with the purpose to track your eating journey. So, I usually get a little sensitive when I don't eat for a whole day. I hope you'll understand... Yeah, I guess that's all for now. " + "\n\n" + "Oh and by the way, you can come back here every day to check up on me!";
             PopulateSkinList();
             currentSkinID = 0;
             popped = false;
@@ -430,7 +431,7 @@ public class Player : MonoBehaviour
     }
 
     public bool CheckCal () {
-        if (TEAIntake < 1500) {
+        if (TEAIntake < 1200) {
             pedromsg1 += "\n\t" + "Our body needs calories for energy.";
             pedromsg2 += " There were not enough calories yesterday, I’m feeling a little weak today… :(";
             return false;
@@ -443,31 +444,27 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void InsertInFoodLogs() {
+    public void InsertInFoodLogs(FoodLog food) {
         if (dailyFoodIntake.Count != 0) {
             if (dailyFoodIntake[dailyFoodIntake.Count - 1].dateLogged == DateTime.Today.ToString()) {
-                dailyFoodIntake[dailyFoodIntake.Count - 1].foodLogsForTheDay = new List<FoodLog>(foodIntake);
+                dailyFoodIntake[dailyFoodIntake.Count - 1].foodLogsForTheDay.Add(food);
                 dailyFoodIntake[dailyFoodIntake.Count - 1].TEAIntake = TEAIntake;
                 dailyFoodIntake[dailyFoodIntake.Count - 1].CHOIntake = CHOIntake;
                 dailyFoodIntake[dailyFoodIntake.Count - 1].PROIntake = PROIntake;
                 dailyFoodIntake[dailyFoodIntake.Count - 1].FATIntake = FATIntake;
             }
             else {
-                dailyFoodIntake.Add(new DailyIntake(
-                                        foodIntake, 
-                                        DateTime.Today.ToString(),
-                                        TEA,
-                                        CHO,
-                                        PRO,
-                                        FAT,
-                                        TEAIntake,
-                                        CHOIntake,
-                                        PROIntake,
-                                        FATIntake
-                                    ));
+                CreateFoodLog();
+                dailyFoodIntake[dailyFoodIntake.Count - 1].foodLogsForTheDay.Add(food);
             }
-        } else {
-            dailyFoodIntake.Add(new DailyIntake(
+        } else { //can work without this
+            CreateFoodLog();
+        }
+    }
+
+    public void CreateFoodLog() {
+        Reset();
+        dailyFoodIntake.Add(new DailyIntake(
                         foodIntake,
                         DateTime.Today.ToString(),
                         TEA,
@@ -479,17 +476,15 @@ public class Player : MonoBehaviour
                         PROIntake,
                         FATIntake
                     ));
-        }
     }
 
     //store
     public void PopulateSkinList() {
         skins.Add(new Skin(0, "Pedro", "Your friend forever!", 0, true, true));
-        skins.Add(new Skin(1, "Space Suit", "I look cool, right?", 8, false, false));
-        skins.Add(new Skin(2, "Choi Seungcheol", "Hi! I'm general leader S.Coups.", 12, false, false));
-        skins.Add(new Skin(3, "Kim Mingyu", "I'm so tired. I'm so tired. I'm so tired.", 20, false, false));
-        skins.Add(new Skin(4, "Boo Seungkwan", "Let me introduce yourself...", 40, false, false));
-
+        skins.Add(new Skin(1, "Dairy Fairy", "Bippity boppityy cook!", 8, false, false));
+        skins.Add(new Skin(2, "Surf and Burp", "My favorite course? Main, of course!", 12, false, false));
+        skins.Add(new Skin(3, "Moonpie", "BRB. Currently, out of this world.", 20, false, false));
+        skins.Add(new Skin(4, "P-Potter", "You're a wizard, Pedro...", 40, false, false));
     }
 
     public void SetDiscounts() {

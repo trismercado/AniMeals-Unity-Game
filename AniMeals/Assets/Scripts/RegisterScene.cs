@@ -53,7 +53,8 @@ public class RegisterScene : MonoBehaviour
         weight = inputWeight.text;
         height = inputHeight.text;
 
-        // saveBtn.gameObject.SetActive(CheckEntries());
+        saveBtn.interactable = CheckEntries();
+        
         if (index == 0) {
             pageCounter1.color = currentColor;
             pageCounter2.color = notCurrentColor;

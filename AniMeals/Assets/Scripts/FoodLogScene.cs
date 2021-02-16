@@ -49,6 +49,7 @@ public class FoodLogScene : MonoBehaviour
 
     private Player gs;
     private GameObject go;
+    private FoodLogPopUp pop;
 
     public Dropdown drop;
 
@@ -57,7 +58,7 @@ public class FoodLogScene : MonoBehaviour
     public InputField inputFoodName;
     public List<string> suggestionList;
 
-    public Text suggestionsText;
+    public Button saveBtn;
     private string display;
 
     [SerializeField]
@@ -66,6 +67,9 @@ public class FoodLogScene : MonoBehaviour
     //Food Intake
     public FoodData foodLog = new FoodData();
     public FoodLog log = new FoodLog(); //with meal category of breakfast, lunch, snack, dinner    
+
+    Color32 rewardcolor = new Color32(0x3F, 0xC8, 0x8D, 0xFF); 
+
 
 
     // Start is called before the first frame update
@@ -86,6 +90,14 @@ public class FoodLogScene : MonoBehaviour
             return;
         }
         gs = go.GetComponent<Player>();
+
+        go = GameObject.Find("FoodLogPopUp");
+            if (go == null) {
+                Debug.LogError("No food log pop up gameobject");
+                this.enabled = false;
+                return;
+            }
+        pop = go.GetComponent<FoodLogPopUp>();
 
         drop.value = 0;
     }
@@ -110,6 +122,8 @@ public class FoodLogScene : MonoBehaviour
             fatField = inputFat.GetComponent<InputField>();
             ManualInput();
         }
+        
+        saveBtn.interactable = CheckEntries();
         // ShowSuggestions();
     }
 
@@ -130,6 +144,13 @@ public class FoodLogScene : MonoBehaviour
             serving = serving - 0.5f;
     }
 
+    public void OnInfoClick() {
+        Action action = () => {
+        };
+        string saysmtng = "To log in your food:" + "\n" + "1.  Input the food you just ate." + "\n" + "2.  If information about the food does not show, you can manually enter them by pressing the Manual button" + "\n\n" + "It's very good to be aware of the food we eat. So, let's eat well!";
+        pop.CenterPopUp("Pedro:", saysmtng, "OK", rewardcolor, action);
+    }
+
     public void OnSaveClick() {
         if (CheckEntries()) {
             CreateFoodLog();
@@ -137,9 +158,9 @@ public class FoodLogScene : MonoBehaviour
             gs.AddToIntake(cal*serving, carbs*serving, protein*serving, fat*serving, log);
             gs.SaveData();
             SceneManager.LoadScene(3); 
-        }   
-        
+        }        
     }
+
 
     public void MealDropDown(int val) {
         if (val == 0) {
@@ -251,17 +272,6 @@ public class FoodLogScene : MonoBehaviour
         foodLog.carbs = carbs*serving;
         foodLog.fats = fat*serving;
         foodLog.proteins = protein*serving;
-    }
-
-    void ShowSuggestions() {
-        if (suggestionList.Count > 0) {
-            for (int i=0; i < suggestionList.Count; i++){
-                display = display + suggestionList[i] + "\n";
-                // Debug.Log(suggestionList[i]);
-            }
-            suggestionsText.text = display;
-        }
-        
     }
 
 

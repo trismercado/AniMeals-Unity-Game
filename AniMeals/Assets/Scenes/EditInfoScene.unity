@@ -1084,6 +1084,7 @@ MonoBehaviour:
   inputWeight: {fileID: 1533532719}
   inputHeight: {fileID: 1363611947}
   drop: {fileID: 4547887}
+  saveBtn: {fileID: 1141094026}
 --- !u!4 &448021398
 Transform:
   m_ObjectHideFlags: 0
@@ -1939,6 +1940,7 @@ MonoBehaviour:
   streak: 0
   softstreak: 0
   popped: 0
+  showPedroDead: 0
   skins: []
 --- !u!1 &774702067
 GameObject:

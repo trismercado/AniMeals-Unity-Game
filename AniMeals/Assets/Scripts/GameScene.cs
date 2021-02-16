@@ -54,10 +54,9 @@ public class GameScene : MonoBehaviour
 
         public Text achieveText;
 
-
         Color32 errorcolor = new Color32(0xA8, 0x4B, 0x4B, 0xFF); 
         Color32 rewardcolor = new Color32(0x3F, 0xC8, 0x8D, 0xFF); 
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -79,9 +78,8 @@ public class GameScene : MonoBehaviour
             pop = go.GetComponent<PopUp>();
         //display
             Displays();
-        //check for pop up
-        if (!gs.popped)
-            CheckForPopUp();
+
+        CheckIfDead();   
     }
 
     // Update is called once per frame
@@ -91,6 +89,12 @@ public class GameScene : MonoBehaviour
         ShowFoodIntake();
         CheckHealth();
         UpdateHunger_Coups();
+
+        if (!gs.popped) {
+            CheckForPopUp();
+            gs.popped = true;
+        }        
+            
     }
 
     public void OnAddFoodClick() {
@@ -182,16 +186,12 @@ public class GameScene : MonoBehaviour
         hungerText.text = Convert.ToInt32(gs.hunger).ToString() +"%";
         healthText.text = gs.health.ToString()+"%";
         coupsText.text = gs.coups.ToString();
+
+        
     }
 
     public void CheckForPopUp() {
-        if (gs.isPedroDead) {
-            Action action = () => {
-                gs.Revive();
-                gs.popped = true;
-            }; 
-            pop.PopUpTrue("Oops!", "It seems like you left Pedro to die... You might have to pay the hospital fee for this...", "Revive",errorcolor, action);
-        } else if (gs.receiveReward) {
+        if (gs.receiveReward) {
             if (gs.streak == 4) { //3day streak
                 Action action = () => {
                     gs.exp += 15;
@@ -200,7 +200,7 @@ public class GameScene : MonoBehaviour
                     if (!gs.achieve.Contains("3-day healthy streak")) {
                         gs.achieve.Add("3-day healthy streak");  
                     }
-                    gs.popped = true;
+
                 };
                 pop.PopUpTrue("Hey good job!", "Our 3-day streak was a success! For this, I'll give you some extra coups!", "Receive", rewardcolor, action);
             } else if (gs.streak == 8) { //7day streak
@@ -211,7 +211,7 @@ public class GameScene : MonoBehaviour
                     if (!gs.achieve.Contains("7-day healthy streak")) {
                         gs.achieve.Add("7-day healthy streak");  
                     }
-                    gs.popped = true;
+
                 };
                 pop.PopUpTrue("Wow!", "Our 7-day streak was a success! Pedro is lucky to have you! Some extra coups is in order!", "Receive", rewardcolor, action);
             } else { //no streak
@@ -219,7 +219,7 @@ public class GameScene : MonoBehaviour
                     gs.exp += 10;
                     gs.coups += 5;
                     gs.receiveReward = false;
-                    gs.popped = true;
+
                 };
                 pop.PopUpTrue("Congratulations!", "We reached yesterday's goal. Here are some coups!", "Receive", rewardcolor, action);
                 // gs.dailyFoodIntake.RemoveAt(dailyFoodIntake.Count-1);
@@ -230,18 +230,27 @@ public class GameScene : MonoBehaviour
                 Action action = () => {
                     gs.exp += 7;
                     gs.coups += 2;
-                    gs.popped = true;
+
                 }; 
                 pop.PopUpTrue("Hi!", "Thank you for checking up on me! Here's a couple of coups. Let's spend this day well!", "OK", rewardcolor, action);
             } else { //new user
                 Action action = () => {
                     gs.coups += 5;
-                    gs.popped = true;
+
                 }; 
                 pop.CenterPopUp("Hi, I'm Pedro!", "Thank you for coming in this journey with me! Here, have 5 coups, you might need them later... I also calculated your body mass index and ideal body weight. You can check your profile for that. It's right there at the top left corner! :)", "OK", rewardcolor, action);
             }
         } 
         
+    }
+
+    public void CheckIfDead() {
+        if (gs.isPedroDead) {
+            Action action = () => {
+            gs.Revive();
+            }; 
+            pop.PopUpTrue("Oops!", "It seems like you left Pedro to die... You might have to pay the hospital fee for this...", "Revive",errorcolor, action);
+        }        
     }
 
     public void Assess() {
