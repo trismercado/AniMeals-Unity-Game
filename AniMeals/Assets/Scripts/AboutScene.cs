@@ -7,7 +7,6 @@ public class AboutScene : MonoBehaviour
 {
     public void OnBackClick()
     {
-        Debug.Log("Back was clicked!");
         SceneManager.LoadScene(0);
 
     }

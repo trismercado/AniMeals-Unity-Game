@@ -57,6 +57,11 @@ public class GameScene : MonoBehaviour
         Color32 errorcolor = new Color32(0xA8, 0x4B, 0x4B, 0xFF); 
         Color32 rewardcolor = new Color32(0x3F, 0xC8, 0x8D, 0xFF); 
 
+    
+    void Awake() {
+        
+    }
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -89,6 +94,11 @@ public class GameScene : MonoBehaviour
         ShowFoodIntake();
         CheckHealth();
         UpdateHunger_Coups();
+        
+        // if (gs.isPedroDead) {
+        //     CheckIfDead();
+        //     gs.isPedroDead = false;
+        // }
 
         if (!gs.popped) {
             CheckForPopUp();
@@ -120,6 +130,17 @@ public class GameScene : MonoBehaviour
     public void OnLogClick() {
         SceneManager.LoadScene(9);
     }
+
+    // void OnApplicationPause(bool isPaused) {
+        
+    //     if (isPaused) {
+    //         Debug.Log("Paused"); 
+    //     } else {
+    //         CheckIfDead();
+    //         Debug.Log("Resumed and checked if dead"); 
+    //     }
+        
+    // }
 
     public void Date_Time() {
         string month = System.DateTime.Now.ToString("MMM dd");
@@ -191,7 +212,7 @@ public class GameScene : MonoBehaviour
     }
 
     public void CheckForPopUp() {
-        if (gs.receiveReward) {
+        if (gs.receiveReward && !gs.isPedroDead) {
             if (gs.streak == 4) { //3day streak
                 Action action = () => {
                     gs.exp += 15;
@@ -225,21 +246,24 @@ public class GameScene : MonoBehaviour
                 // gs.dailyFoodIntake.RemoveAt(dailyFoodIntake.Count-1);
             }
         } else {
-            if (File.Exists(Application.persistentDataPath + "/gamesave.anmls")){
-                //check here if softstreak > 2, softsreak 4, ss > 8
-                Action action = () => {
-                    gs.exp += 7;
-                    gs.coups += 2;
+            if (!gs.isPedroDead) {
+                if (File.Exists(Application.persistentDataPath + "/gamesave.anmls")){
+                    //check here if softstreak > 2, softsreak 4, ss > 8
+                    Action action = () => {
+                        gs.exp += 7;
+                        gs.coups += 2;
 
-                }; 
-                pop.PopUpTrue("Hi!", "Thank you for checking up on me! Here's a couple of coups. Let's spend this day well!", "OK", rewardcolor, action);
-            } else { //new user
-                Action action = () => {
-                    gs.coups += 5;
+                    }; 
+                    pop.PopUpTrue("Hi!", "Thank you for checking up on me! Here's a couple of coups. Let's spend this day well!", "OK", rewardcolor, action);
+                } else { //new user
+                    Action action = () => {
+                        gs.coups += 5;
 
-                }; 
-                pop.CenterPopUp("Hi, I'm Pedro!", "Thank you for coming in this journey with me! Here, have 5 coups, you might need them later... I also calculated your body mass index and ideal body weight. You can check your profile for that. It's right there at the top left corner! :)", "OK", rewardcolor, action);
+                    }; 
+                    pop.CenterPopUp("Hi, I'm Pedro!", "Thank you for coming in this journey with me! Here, have 5 coups, you might need them later... I also calculated your body mass index and ideal body weight. You can check your profile for that. It's right there at the top left corner! :)", "OK", rewardcolor, action);
+                }    
             }
+            
         } 
         
     }
@@ -247,17 +271,29 @@ public class GameScene : MonoBehaviour
     public void CheckIfDead() {
         if (gs.isPedroDead) {
             Action action = () => {
-            gs.Revive();
+                gs.Revive();
             }; 
-            pop.PopUpTrue("Oops!", "It seems like you left Pedro to die... You might have to pay the hospital fee for this...", "Revive",errorcolor, action);
+            pop.CenterPopUp("Oops!", "It seems like you left Pedro to die... You might have to pay the hospital fee for this...", "Revive",errorcolor, action);
         }        
     }
 
     public void Assess() {
+        string[] quotes = {
+            "I know you'll do great today!",
+            "One day you'll remember those challenges you faced and hopefully, you'll smile because you got through all of them",
+            "If you're tired. It's okay to get some rest and refuel!",
+            "I wonder what you're up to today...",
+            "Ooohh hi!",
+            ":)",
+            "roses are red, violets are not purple, the way you eat today will determine my mood tomorrow! :))))",
+            "Small victories are essential to big changes!",
+            "“I now tried a new hypothesis: It was possible that I was more in charge of my happiness than I was allowing myself to be.” \n - Michelle Obama", 
+            "I write you letters regarding your intake every day... I hope you take note of them!"
+        };
+        System.Random rnd = new System.Random();
         Action action = () => {
         };
-        string saysmtng = "Say something interesting...";
-        pop.CenterPopUp("Pedro:", saysmtng, "OK", rewardcolor, action);
+        pop.CenterPopUp("Pedro:", quotes[rnd.Next(0, 6)], "OK", rewardcolor, action);
     }
 
     public void Displays() {

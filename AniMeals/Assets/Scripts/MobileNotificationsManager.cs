@@ -38,12 +38,12 @@ public class MobileNotificationsManager : MonoBehaviour
         
         savePath = Application.persistentDataPath + "/gamesave.anmls";
         if (File.Exists(savePath)) {
-
+            // trialnotif();
         } else {
             morningnotif();
             noonnotif();
             evenotif();
-            // trialnotif();
+            salenotif();
         }
         
         
@@ -119,8 +119,19 @@ public class MobileNotificationsManager : MonoBehaviour
         notification.SmallIcon = "my_custom_icon_id";
         notification.LargeIcon = "my_custom_large_icon_id";
         notification.FireTime = System.DateTime.Now.AddSeconds(10);
+        notification.RepeatInterval = new TimeSpan(0, 0, 1, 0);
         AndroidNotificationCenter.SendNotification(notification, "channel_id");
     }
 
+    public void salenotif() {
+        DateTime regDate = Convert.ToDateTime(PlayerPrefs.GetString("isRegisteredKeyName"));
 
+        var notification = new AndroidNotification();
+        notification.Title = "50% Off on ALL Items!";
+        notification.Text = "Don't lose your chance! Our 2nd week sale is only for today!";
+        notification.SmallIcon = "my_custom_icon_id";
+        notification.LargeIcon = "my_custom_large_icon_id";
+        notification.FireTime = regDate.AddDays(14);
+        AndroidNotificationCenter.SendNotification(notification, "channel_id");
+    }
 }

@@ -112,7 +112,7 @@ public class RegisterScene : MonoBehaviour
             //Register once only
             PlayerPrefs.SetString("isRegisteredKeyName", DateTime.Today.ToString());
 
-            SceneManager.LoadScene(3);
+            SceneManager.LoadScene(11);
         }       
 
     }

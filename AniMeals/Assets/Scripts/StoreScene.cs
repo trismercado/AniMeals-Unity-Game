@@ -132,7 +132,7 @@ public class StoreScene : MonoBehaviour
     }
 
     public void PurchaseSkin() {
-        if (gs.coups > (int)gs.skins[index].price) { //can be removed but for added security wag nalang lol
+        if (gs.coups >= (int)gs.skins[index].price) { //can be removed but for added security wag nalang lol
             gs.coups = gs.coups - (int)gs.skins[index].price;
             gs.skins[index].isBought = true;
         }         

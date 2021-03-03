@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
         }
         isUnique = this;
         DontDestroyOnLoad(this.gameObject);  
-        // SetDiscounts();
+        SetDiscounts();
     }
 
 
@@ -90,7 +90,6 @@ public class Player : MonoBehaviour
         //the logged cal intake over the remaining cal u have to consume
         else DecreaseHunger((cal/TEA)*100);
         // //if cal intake is greater than the required just decrease hunger with regards to its cal requirement
-        // //at this point exceeding calorie intake should not have good benefits on pedro
         InsertInFoodLogs(food);
     }
 
@@ -99,6 +98,7 @@ public class Player : MonoBehaviour
         if (hunger >= 100f) {
             hunger = 100f;
             isPedroDead = true;
+            // popped = false;
         } else {
             isPedroDead = false;
         }
@@ -115,9 +115,9 @@ public class Player : MonoBehaviour
         health += amt;
         if (health >= 100f) {
             health = 100f;
-            pedromsg1 = "Thanks for eating well! Do I look strong and healthy? So do you! Let’s keep this going!";
+            pedromsg1 = "Yay! We achieved all of our nutrient goals yesterday! Thanks for eating well! Do I look strong and healthy? So do you! Let’s keep this going!";
         } else {
-            pedromsg1 = "Thanks for eating well! I'm feeling better today!";
+            pedromsg1 = "Congratulations! We achieved all of our nutrient goals yesterday! Thanks for eating well! I'm feeling better today!";
         }
         exp += 15;
     }
@@ -127,6 +127,7 @@ public class Player : MonoBehaviour
         if (health <= 0f) {
             health = 0f;
             isPedroDead = true;
+            // popped = false;
         } else {
             isPedroDead = false;
         }
@@ -136,9 +137,11 @@ public class Player : MonoBehaviour
         isPedroDead = false;
         hunger = 0f;
         health = 100f;
-        coups -= 1;
         streak = 0;
         softstreak = 0;
+        if (coups > 0) {
+            coups -= 1;
+        } 
         pedromsg1 = "Hey! I am back to life! I missed you! \n \n ...Don't let me die again ok?";
     }
 
@@ -356,9 +359,9 @@ public class Player : MonoBehaviour
         pedromsg1 = "";
         pedromsg2 = "";
         bool a = CheckCarbs();
-        bool b = CheckFats();
+        bool b = CheckCal();
         bool c = CheckPro();
-        bool d = CheckCal();
+        bool d = CheckFats(); 
         if (a && b && c && d) {
             Heal(20);            
             pedromsg2 = ""; 
@@ -388,10 +391,24 @@ public class Player : MonoBehaviour
         pedromsg1 = pedromsg1 + "\n\n" + pedromsg2;
     }
 
+    public bool CheckFats() {
+        if (FATIntake < FAT) {
+            pedromsg1 += "\n\t" + "Fat is our body’s fuel source, the major storage of energy in the body.";
+            pedromsg2 += " We didn’t eat enough fats. Fats are good too, you know… Now, I’m feeling a bit stressed. How are you?";
+            return false;
+        } else if (FATIntake > (TEA*0.30)/9) {
+            pedromsg1 += "\n\t" + "Fat is our body’s fuel source, the major storage of energy in the body.";
+            pedromsg2 += " We had too much fats. I feel like my blood pressure is up there somewhere… How are you?";
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public bool CheckCarbs() {
         if (CHOIntake < (TEA*0.55)/4) {
              pedromsg1 += "\n\t" + "Carbohydrates affect our blood sugar and energy.";
-             pedromsg2 += " We didn’t eat enough carbs yesterday, my head is starting to hurt huhu ";
+             pedromsg2 += " I think the lack of calories caused my head to hurt.";
              return false;
         } else if (CHOIntake > (TEA*0.70)/4) {
              pedromsg1 += "\n\t" + "Carbohydrates affect our blood sugar and energy.";
@@ -405,25 +422,11 @@ public class Player : MonoBehaviour
     public bool CheckPro() {
         if (PROIntake < (TEA*0.10)/4) {
             pedromsg1 += "\n\t" + "Protein is used to create the building blocks of the body.";
-            pedromsg2 += " I’m feeling so weak today. I think it’s because you didn’t eat enough protein yesterday.";
+            pedromsg2 += " Yesterday's protein intake wasn't enough. A little more of that could really help with repairing our tissues.";
             return false;
         } else if (PROIntake > PRO){
             pedromsg1 += "\n\t" + "Protein is used to create the building blocks of the body.";
-            pedromsg2 += " We ate too much protein yesterday, I feel nauseated and exhausted. :(";
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public bool CheckFats() {
-        if (FATIntake < FAT) {
-            pedromsg1 += "\n\t" + "Fat is our body’s fuel source, the major storage of energy in the body.";
-            pedromsg2 += " We didn’t eat enough fats. Fats are good too, you know… Now, I’m feeling a bit stressed. :(";
-            return false;
-        } else if (FATIntake > (TEA*0.30)/9) {
-            pedromsg1 += "\n\t" + "Fat is our body’s fuel source, the major storage of energy in the body.";
-            pedromsg2 += " We had too much fats. I feel like my blood pressure is up there somewhere…";
+            pedromsg2 += " We exceeded the suggested protein intake yesterday. I hope you drank a lot of water. I heard too much protein can cause dehydration.";
             return false;
         } else {
             return true;
@@ -433,11 +436,11 @@ public class Player : MonoBehaviour
     public bool CheckCal () {
         if (TEAIntake < 1200) {
             pedromsg1 += "\n\t" + "Our body needs calories for energy.";
-            pedromsg2 += " There were not enough calories yesterday, I’m feeling a little weak today… :(";
+            pedromsg2 += " There were not enough calories yesterday. So, I’m feeling a little weak today…";
             return false;
         } else if (TEAIntake > TEA) {
             pedromsg1 += "\n\t" + "Our body needs calories for energy.";
-            pedromsg2 += "  I had WAAAAY too many calories, I’m feeling a little bloated… How are you?";
+            pedromsg2 += "  I had a little too much calories. So, I’m feeling a little bloated…";
             return false;
         } else {
             return true;
@@ -493,16 +496,21 @@ public class Player : MonoBehaviour
 
         DateTime today = DateTime.Today;
         DateTime regDate = Convert.ToDateTime(PlayerPrefs.GetString("isRegisteredKeyName"));
-
-        if (regDate.AddDays(1) == today) {
+        float[] origPrices = {0f, 8f, 12f, 20f, 40f};
+        if (regDate.AddDays(14) == today) {
             Debug.Log("Sale today!");
             for (int i = 0; i < 5; i++) {
-                skins[i].price = skins[i].price - (skins[i].price*0.5f);
+                skins[i].price = origPrices[i] - (origPrices[i]*0.5f);
                 Debug.Log(skins[i].title + ": " + skins[i].price);
                 // isDiscounted = true;
             }
         } else {
-            Debug.Log("Sale on: " + regDate.AddDays(1).ToString());
+            for (int i = 0; i < 5; i++) {
+                skins[i].price = origPrices[i];
+                // Debug.Log(skins[i].title + ": " + skins[i].price);
+                // isDiscounted = true;
+            }
+            
         }
     }
 

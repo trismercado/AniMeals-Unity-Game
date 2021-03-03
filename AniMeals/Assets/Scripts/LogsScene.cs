@@ -38,6 +38,7 @@ public class LogsScene : MonoBehaviour
     
     public Button nxtBtn;
     public Button prevBtn;
+    public Image NoLogsGO;
 
     TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
     
@@ -56,15 +57,15 @@ public class LogsScene : MonoBehaviour
         gs = go.GetComponent<Player>();
 
         current = today;
-        drop.value = 0;
-        meal = "Breakfast";
         int index = gs.dailyFoodIntake.FindIndex(a => a.dateLogged.Equals(current.ToString()));
+        meal = "Breakfast";
+        drop.value = 0;
 
         if (index >= 0) {
             Log = gs.dailyFoodIntake[index];        
             DisplayFoodLogs();
         } else {
-            Debug.Log("No logs.");
+            // Debug.Log("No logs.");
         }
     }
 
@@ -85,7 +86,6 @@ public class LogsScene : MonoBehaviour
         } else {
             nxtBtn.gameObject.SetActive(true);
             prevBtn.gameObject.SetActive(true);
-
         }
     }
 
@@ -155,22 +155,27 @@ public class LogsScene : MonoBehaviour
         fatsSlider.SetMaxValue(Log.FAT);
         fatsSlider.SetCurrentVal(Log.FATIntake);
 
-        foreach(var foodLog in Log.foodLogsForTheDay) {
-            if (foodLog.mealCategory.Equals(meal)) {
-                bfast = Instantiate(breakfast, breakfastHolder);
-                bfast.transform.GetChild(0).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.foodName);
-                bfast.transform.GetChild(1).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.serving.ToString());
-                bfast.transform.GetChild(2).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.calories.ToString()) + " kcal";
-            } 
+        if (Log.foodLogsForTheDay.Any(s => s.mealCategory.Equals(meal))) {
+            NoLogsGO.gameObject.SetActive(false);
+            foreach(var foodLog in Log.foodLogsForTheDay) {
+                if (foodLog.mealCategory.Equals(meal)) {
+                    bfast = Instantiate(breakfast, breakfastHolder);
+                    bfast.transform.GetChild(0).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.foodName);
+                    bfast.transform.GetChild(1).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.serving.ToString());
+                    bfast.transform.GetChild(2).GetComponent<Text>().text = textInfo.ToTitleCase(foodLog.food.calories.ToString()) + " kcal";
+                } 
+            }
+        } else {
+            NoLogsGO.gameObject.SetActive(true);
         }
         LayoutRebuilder.ForceRebuildLayoutImmediate(_rootRectTransform);
     }
 
     public void ReplaceFoodLogs() {
-        TEAIntake.text = "0kcal/ \n" + "0kcal";
-        CHOIntake.text = "0g/ \n" + "0g";
-        FATIntake.text = "0g/ \n" + "0g";
-        PROIntake.text = "0g/ \n" + "0g";
+        TEAIntake.text = "0kcal/ \n" + gs.TEA + "kcal";
+        CHOIntake.text = "0g/ \n" + gs.CHO + "g";
+        FATIntake.text = "0g/ \n" + gs.FAT +  "g";
+        PROIntake.text = "0g/ \n" + gs.PRO + "g";
         calSlider.SetMaxValue(0f);
         calSlider.SetCurrentVal(0f);
         choSlider.SetMaxValue(0f);
@@ -191,13 +196,13 @@ public class LogsScene : MonoBehaviour
         foreach (var clone in clones){
             Destroy(clone);
         }
-        for (int i=0; i < 4; i++) {
-            if (temp == i) {
-                mealCat[i].SetActive(true);
-            } else {
-                mealCat[i].SetActive(false);
-            }
-        }
+        // for (int i=0; i < 4; i++) {
+        //     if (temp == i) {
+        //         mealCat[i].SetActive(true);
+        //     } else {
+        //         mealCat[i].SetActive(false);
+        //     }
+        // }
     }
 
 

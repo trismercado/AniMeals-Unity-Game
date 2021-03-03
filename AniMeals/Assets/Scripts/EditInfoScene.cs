@@ -87,11 +87,22 @@ public class EditInfoScene : MonoBehaviour
     }
 
     public bool CheckEntries() {
-        if (float.Parse(weight) > 0f && float.Parse(height) > 0f && name != "" && int.Parse(activityLevel) > 0 && int.Parse(activityLevel) < 6) {
-            return true;
-        } else  {
+        float a, b;
+        int c, d;
+        bool t = float.TryParse(weight, out a);
+        bool u = float.TryParse(height, out b);
+        bool v = int.TryParse(activityLevel, out c);
+        bool q = int.TryParse(activityLevel, out d);
+        if (name != null && t && u && v && q ) {
+           if ( a > 0f && b > 0f && name != "" && c > 0 && d < 6) {
+                    return true;
+                } else  {
+                    return false;
+            } 
+        } else {
             return false;
         }
+        
     }
 
 }

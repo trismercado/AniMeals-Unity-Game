@@ -16,7 +16,7 @@ EditorBuildSettings:
     guid: 5afa8b9fd523393439eee98d7dff4d08
   - enabled: 1
     path: Assets/Scenes/AboutScene.unity
-    guid: 7e06a18af7f2504469f9875f793786ee
+    guid: 2ee9477422f18ac4f99a192324604ca6
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: 376a57c93df609c408d1cd58f1976c0b
@@ -41,6 +41,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EditInfoScene.unity
     guid: bfd3bbd7dc35c3d43a699260945d6cdc
+  - enabled: 1
+    path: Assets/Scenes/OnboardingScene.unity
+    guid: 7e06a18af7f2504469f9875f793786ee
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
