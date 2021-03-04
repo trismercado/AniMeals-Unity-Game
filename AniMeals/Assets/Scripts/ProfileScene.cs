@@ -61,23 +61,15 @@ public class ProfileScene : MonoBehaviour
         Display();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 
     public void OnBackClick()
     {
-        Debug.Log("Back was clicked!");
         SceneManager.LoadScene(3);
 
     }
 
     public void OnEditClick()
     {
-        Debug.Log("Edit was clicked!");
         SceneManager.LoadScene(10);
 
     }

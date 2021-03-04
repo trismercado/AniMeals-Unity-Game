@@ -53,7 +53,7 @@ public class GameScene : MonoBehaviour
         public BarSlider fatsSlider;
 
         public Text achieveText;
-
+        public bool decCoups;
         Color32 errorcolor = new Color32(0xA8, 0x4B, 0x4B, 0xFF); 
         Color32 rewardcolor = new Color32(0x3F, 0xC8, 0x8D, 0xFF); 
 
@@ -84,7 +84,10 @@ public class GameScene : MonoBehaviour
         //display
             Displays();
 
-        CheckIfDead();   
+        if (gs.health == 0f) {
+            DeadHealthPopUp();  
+            gs.popped = true;
+        }  
     }
 
     // Update is called once per frame
@@ -95,17 +98,21 @@ public class GameScene : MonoBehaviour
         CheckHealth();
         UpdateHunger_Coups();
         
-        // if (gs.isPedroDead) {
-        //     CheckIfDead();
-        //     gs.isPedroDead = false;
-        // }
-
-        if (!gs.popped) {
-            CheckForPopUp();
+        
+        if (gs.hunger == 100f && gs.health != 0f) {
+            DeadPopUp();  
             gs.popped = true;
-        }        
+        } else if (gs.hunger == 100f && gs.health == 0f) {
+
+        } else {
+            if (!gs.popped) {
+                CheckForPopUp();
+                gs.popped = true;
+            }
+        }       
             
     }
+
 
     public void OnAddFoodClick() {
         SceneManager.LoadScene(4);
@@ -130,17 +137,6 @@ public class GameScene : MonoBehaviour
     public void OnLogClick() {
         SceneManager.LoadScene(9);
     }
-
-    // void OnApplicationPause(bool isPaused) {
-        
-    //     if (isPaused) {
-    //         Debug.Log("Paused"); 
-    //     } else {
-    //         CheckIfDead();
-    //         Debug.Log("Resumed and checked if dead"); 
-    //     }
-        
-    // }
 
     public void Date_Time() {
         string month = System.DateTime.Now.ToString("MMM dd");
@@ -207,8 +203,6 @@ public class GameScene : MonoBehaviour
         hungerText.text = Convert.ToInt32(gs.hunger).ToString() +"%";
         healthText.text = gs.health.ToString()+"%";
         coupsText.text = gs.coups.ToString();
-
-        
     }
 
     public void CheckForPopUp() {
@@ -245,40 +239,47 @@ public class GameScene : MonoBehaviour
                 pop.PopUpTrue("Congratulations!", "We reached yesterday's goal. Here are some coups!", "Receive", rewardcolor, action);
                 // gs.dailyFoodIntake.RemoveAt(dailyFoodIntake.Count-1);
             }
-        } else {
-            if (!gs.isPedroDead) {
-                if (File.Exists(Application.persistentDataPath + "/gamesave.anmls")){
-                    //check here if softstreak > 2, softsreak 4, ss > 8
-                    Action action = () => {
-                        gs.exp += 7;
-                        gs.coups += 2;
+        } else if (!gs.isPedroDead) {
+            if (File.Exists(Application.persistentDataPath + "/gamesave.anmls")){
+                //check here if softstreak > 2, softsreak 4, ss > 8
+                Action action = () => {
+                    gs.exp += 7;
+                    gs.coups += 2;
 
-                    }; 
-                    pop.PopUpTrue("Hi!", "Thank you for checking up on me! Here's a couple of coups. Let's spend this day well!", "OK", rewardcolor, action);
-                } else { //new user
-                    Action action = () => {
-                        gs.coups += 5;
+                }; 
+                pop.PopUpTrue("Hi!", "Thank you for checking up on me! Here's a couple of coups. Let's spend this day well!", "OK", rewardcolor, action);
+            } else { //new user
+                Action action = () => {
+                    gs.coups += 5;
 
-                    }; 
-                    pop.CenterPopUp("Hi, I'm Pedro!", "Thank you for coming in this journey with me! Here, have 5 coups, you might need them later... I also calculated your body mass index and ideal body weight. You can check your profile for that. It's right there at the top left corner! :)", "OK", rewardcolor, action);
-                }    
-            }
-            
+                }; 
+                pop.CenterPopUp("Hi, I'm Pedro!", "Thank you for coming in this journey with me! Here, have 5 coups, you might need them later... I also calculated your body mass index and ideal body weight. You can check your profile for that. It's right there at the top left corner! :)", "OK", rewardcolor, action);
+            }    
         } 
         
     }
 
-    public void CheckIfDead() {
-        if (gs.isPedroDead) {
-            Action action = () => {
-                gs.Revive();
-            }; 
-            pop.CenterPopUp("Oops!", "It seems like you left Pedro to die... You might have to pay the hospital fee for this...", "Revive",errorcolor, action);
-        }        
+    public void DeadPopUp() {
+        Action action = () => {
+            gs.Revive();
+        }; 
+        pop.CenterDeadPopUp("Oops!", "It seems like you left Pedro to starve... Log the food you ate today to get him back...", "Log Meal",errorcolor, action);
+
     }
 
+    public void DeadHealthPopUp(){
+        Action action = () => {
+            gs.Revive();
+            gs.health = 100f;
+            gs.hunger = 0f;
+            gs.coups -= 2;
+        }; 
+        pop.CenterPopUp("Oh no!", "Pedro felt very ill... He's current health is at 0. You will have to pay the hospital bills for this.", "Pay Hospital",errorcolor, action);
+
+    }  
+
     public void Assess() {
-        string[] quotes = {
+        string[] quotes = new string[] {
             "I know you'll do great today!",
             "One day you'll remember those challenges you faced and hopefully, you'll smile because you got through all of them",
             "If you're tired. It's okay to get some rest and refuel!",
@@ -293,7 +294,7 @@ public class GameScene : MonoBehaviour
         System.Random rnd = new System.Random();
         Action action = () => {
         };
-        pop.CenterPopUp("Pedro:", quotes[rnd.Next(0, 6)], "OK", rewardcolor, action);
+        pop.CenterPopUp("Pedro:", quotes[rnd.Next(0, quotes.Length-1)], "OK", rewardcolor, action);
     }
 
     public void Displays() {

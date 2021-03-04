@@ -89,7 +89,6 @@ public class RegisterScene : MonoBehaviour
 
     public void OnBackClick()
     {
-        // Debug.Log("Back was clicked!");
         SceneManager.LoadScene(0);
 
     }

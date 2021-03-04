@@ -99,7 +99,8 @@ public class Player : MonoBehaviour
             hunger = 100f;
             isPedroDead = true;
             // popped = false;
-        } else {
+        } 
+        else {
             isPedroDead = false;
         }
     } 
@@ -128,20 +129,15 @@ public class Player : MonoBehaviour
             health = 0f;
             isPedroDead = true;
             // popped = false;
-        } else {
+        } 
+        else {
             isPedroDead = false;
         }
     }
 
     public void Revive(){
-        isPedroDead = false;
-        hunger = 0f;
-        health = 100f;
         streak = 0;
         softstreak = 0;
-        if (coups > 0) {
-            coups -= 1;
-        } 
         pedromsg1 = "Hey! I am back to life! I missed you! \n \n ...Don't let me die again ok?";
     }
 
@@ -484,10 +480,10 @@ public class Player : MonoBehaviour
     //store
     public void PopulateSkinList() {
         skins.Add(new Skin(0, "Pedro", "Your friend forever!", 0, true, true));
-        skins.Add(new Skin(1, "Dairy Fairy", "Bippity boppityy cook!", 8, false, false));
-        skins.Add(new Skin(2, "Surf and Burp", "My favorite course? Main, of course!", 12, false, false));
-        skins.Add(new Skin(3, "Moonpie", "BRB. Currently, out of this world.", 20, false, false));
-        skins.Add(new Skin(4, "P-Potter", "You're a wizard, Pedro...", 40, false, false));
+        skins.Add(new Skin(1, "Dairy Fairy", "Bippity boppityy cook!", 16, false, false));
+        skins.Add(new Skin(2, "Surf and Burp", "My favorite course? Main, of course!", 30, false, false));
+        skins.Add(new Skin(3, "Moonpie", "BRB. Currently, out of this world.", 44, false, false));
+        skins.Add(new Skin(4, "P-Potter", "You're a wizard, Pedro...", 58, false, false));
     }
 
     public void SetDiscounts() {
@@ -496,19 +492,15 @@ public class Player : MonoBehaviour
 
         DateTime today = DateTime.Today;
         DateTime regDate = Convert.ToDateTime(PlayerPrefs.GetString("isRegisteredKeyName"));
-        float[] origPrices = {0f, 8f, 12f, 20f, 40f};
-        if (regDate.AddDays(14) == today) {
+        float[] origPrices = {0f, 16f, 30f, 44f, 58f};
+        if (regDate.AddDays(1) == today) {
             Debug.Log("Sale today!");
             for (int i = 0; i < 5; i++) {
                 skins[i].price = origPrices[i] - (origPrices[i]*0.5f);
-                Debug.Log(skins[i].title + ": " + skins[i].price);
-                // isDiscounted = true;
             }
         } else {
             for (int i = 0; i < 5; i++) {
                 skins[i].price = origPrices[i];
-                // Debug.Log(skins[i].title + ": " + skins[i].price);
-                // isDiscounted = true;
             }
             
         }

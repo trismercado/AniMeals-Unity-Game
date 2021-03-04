@@ -128,18 +128,15 @@ public class FoodLogScene : MonoBehaviour
     }
 
     public void OnBackClick(){
-        Debug.Log("Back was clicked!");
         SceneManager.LoadScene(3);
 
     }
 
     public void OnAddClick() {
-        // Debug.Log("Add was clicked!");
         serving = serving + 0.5f;
     }
 
     public void OnMinusClick() {
-        // Debug.Log("Minus was clicked!");
         if (serving > 1) 
             serving = serving - 0.5f;
     }

@@ -196,13 +196,7 @@ public class LogsScene : MonoBehaviour
         foreach (var clone in clones){
             Destroy(clone);
         }
-        // for (int i=0; i < 4; i++) {
-        //     if (temp == i) {
-        //         mealCat[i].SetActive(true);
-        //     } else {
-        //         mealCat[i].SetActive(false);
-        //     }
-        // }
+ 
     }
 
 
