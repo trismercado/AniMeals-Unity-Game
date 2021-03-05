@@ -91,9 +91,9 @@ public class FoodLogScene : MonoBehaviour
         }
         gs = go.GetComponent<Player>();
 
-        go = GameObject.Find("FoodLogPopUp");
+        go = GameObject.Find("PopUp");
             if (go == null) {
-                Debug.LogError("No food log pop up gameobject");
+                Debug.LogError("pop up gameobject");
                 this.enabled = false;
                 return;
             }

@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class StoreScene : MonoBehaviour
 {
     private GameObject go;
     private Player gs;
+    private AchievementPopUp pop;
+
     public Skin charSkin;
     public int index;
 
@@ -30,7 +33,10 @@ public class StoreScene : MonoBehaviour
     public Image pageCounter5;
     Color32 currentColor = new Color32(0xFF, 0xFF, 0xFF, 0xFF);
     Color32 notCurrentColor = new Color32(0x50, 0x50, 0x50, 0xFF);
+    Color32 rewardcolor = new Color32(0x3F, 0xC8, 0x8D, 0xFF); 
 
+
+    public int itemsBought;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +47,14 @@ public class StoreScene : MonoBehaviour
             return;
         }
         gs = go.GetComponent<Player>();
+
+        go = GameObject.Find("AchievementPopUp");
+            if (go == null) {
+                Debug.LogError("No pop up gameobject");
+                this.enabled = false;
+                return;
+            }
+        pop = go.GetComponent<AchievementPopUp>();
 
         index = 0;
     }
@@ -59,6 +73,8 @@ public class StoreScene : MonoBehaviour
             prvBtn.gameObject.SetActive(true);
             nxtBtn.gameObject.SetActive(true);
         }
+
+
     }
 
     public void OnBackClick()
@@ -134,7 +150,40 @@ public class StoreScene : MonoBehaviour
         if (gs.coups >= (int)gs.skins[index].price) { //can be removed but for added security wag nalang lol
             gs.coups = gs.coups - (int)gs.skins[index].price;
             gs.skins[index].isBought = true;
-        }         
+            
+        }  
+        
+        itemsBought = 0;
+        
+        foreach (var i in gs.skins) {
+            if (i.isBought == true) {
+                itemsBought += 1;
+            }
+        }
+
+        if (itemsBought == 2 && !gs.achieve.Contains("You Got Style!")) {
+            Action action = () => {
+                gs.achieve.Add("You Got Style!"); 
+                gs.coups += 5; 
+
+            };
+            pop.PopUpTrue("Lookin Good!", "You bought Pedro's first costume! \n\n You're getting: +5 Coups", "Receive", rewardcolor, action); 
+        } else if (itemsBought == 4 && !gs.achieve.Contains("A Whole Closet!")) {
+            Action action = () => {
+                gs.achieve.Add("A Whole Closet!"); 
+                gs.coups += 7;  
+
+            };
+            pop.PopUpTrue("That's a good fit!", "You purchased 3 costumes! You're really going all out, huh? \n\n You're getting: +7 Coups", "Receive", rewardcolor, action);
+        } else if (itemsBought == 5 && !gs.achieve.Contains("Shopping Spree")) {
+            Action action = () => {
+                gs.achieve.Add("Shopping Spree"); 
+                gs.coups += 9;   
+
+            };
+            pop.PopUpTrue("The serve!", "She said variety, honeey!!! \n\n You're getting: +9 Coups", "Receive", rewardcolor, action);
+        }
+
     }
 
     public void SelectSkin() {

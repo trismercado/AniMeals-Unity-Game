@@ -69,6 +69,7 @@ public class Player : MonoBehaviour
         }
         isUnique = this;
         DontDestroyOnLoad(this.gameObject);  
+
         SetDiscounts();
     }
 
@@ -136,9 +137,7 @@ public class Player : MonoBehaviour
     }
 
     public void Revive(){
-        streak = 0;
-        softstreak = 0;
-        pedromsg1 = "Hey! I am back to life! I missed you! \n \n ...Don't let me die again ok?";
+        
     }
 
     public void Reset(){
@@ -369,16 +368,14 @@ public class Player : MonoBehaviour
             pedromsg2 = "You didn't reach all the goal nutrients yesterday... So when you were gone my tummy started feeling weird... Let's eat better today so we can heal fast, ok?"; 
             Damage(20);
             streak = 0; 
-            softstreak = 0;
         } else if (!a || !b || !c || !d) {
             pedromsg1 = "Remember: " + pedromsg1;
             pedromsg2 = pedromsg2 + "\n\n" + "I'm sure there are plenty of good food for our body. Let's eat better today!";
             Damage(20);
             streak = 0; 
 
-            if (foodIntake.Count > 3) {
+            if (foodIntake.Count > 0) {
                 softstreak += 1;
-                Debug.Log(softstreak);
             } else {
                 softstreak = 0;
             }
@@ -487,13 +484,10 @@ public class Player : MonoBehaviour
     }
 
     public void SetDiscounts() {
-        //do this only once
-        //return to old price if not a sale day (you can set it manually naman since 4 lang yung items)
-
         DateTime today = DateTime.Today;
         DateTime regDate = Convert.ToDateTime(PlayerPrefs.GetString("isRegisteredKeyName"));
         float[] origPrices = {0f, 16f, 30f, 44f, 58f};
-        if (regDate.AddDays(1) == today) {
+        if (regDate.AddDays(14) == today) {
             Debug.Log("Sale today!");
             for (int i = 0; i < 5; i++) {
                 skins[i].price = origPrices[i] - (origPrices[i]*0.5f);

@@ -53,9 +53,11 @@ public class GameScene : MonoBehaviour
         public BarSlider fatsSlider;
 
         public Text achieveText;
-        public bool decCoups;
+        public GameObject[] pedros;
         Color32 errorcolor = new Color32(0xA8, 0x4B, 0x4B, 0xFF); 
         Color32 rewardcolor = new Color32(0x3F, 0xC8, 0x8D, 0xFF); 
+
+
 
     
     void Awake() {
@@ -88,6 +90,9 @@ public class GameScene : MonoBehaviour
             DeadHealthPopUp();  
             gs.popped = true;
         }  
+
+        CheckPedroSkin();
+        
     }
 
     // Update is called once per frame
@@ -95,8 +100,8 @@ public class GameScene : MonoBehaviour
     { 
         Date_Time();
         ShowFoodIntake();
-        CheckHealth();
-        UpdateHunger_Coups();
+        UpdateHunger_Coups_Achievement();
+        
         
         
         if (gs.hunger == 100f && gs.health != 0f) {
@@ -161,93 +166,129 @@ public class GameScene : MonoBehaviour
         FATIntakeText.text = gs.FATIntake.ToString() +"g";
     }
 
-    public void CheckHealth() {
-        if (gs.health < 60 || gs.hunger >= 90) {
-            if (gs.currentSkinID == 0) {
-                sadimg.enabled = false;
-                happyimg.enabled = false;
-                deadimg.enabled = true;
-                happyssimg.enabled = false;
-                
-            }            
-            //dying
-        } else if ((gs.health <= 80 && gs.health >= 60) || (gs.hunger > 70)) {
-            if (gs.currentSkinID == 0) {
-                sadimg.enabled = true;
-                happyimg.enabled = false;
-                deadimg.enabled = false;
-                happyssimg.enabled = false;
+    public void CheckPedroSkin() {
+        for (int i=0; i < 5; i++) {
+            if (gs.currentSkinID == i) {
+                pedros[i].SetActive(true);
+            } else {
+                pedros[i].SetActive(false);
             }
-            //pedro sad
-        } else {
-            //healthy
-            if (gs.currentSkinID == 0) {
-                sadimg.enabled = false;
-                happyimg.enabled = true;
-                deadimg.enabled = false;
-                happyssimg.enabled = false;
-            } else if (gs.currentSkinID == 1) {
-                happyssimg.enabled = true;
-                happyimg.enabled = false;
-                deadimg.enabled = false;
-                sadimg.enabled = false;
-
-            }
-            
-            //for changing sprites
-            //access the id of current skin and set display here
         }
+        
     }
 
-    public void UpdateHunger_Coups() {
+    public void UpdateHunger_Coups_Achievement() {
         hungerText.text = Convert.ToInt32(gs.hunger).ToString() +"%";
         healthText.text = gs.health.ToString()+"%";
         coupsText.text = gs.coups.ToString();
+        if (gs.achieve.Count != 0) {
+            achieveText.text = gs.achieve[(gs.achieve.Count - 1)];
+        } else {
+            achieveText.text = "No achievements yet";
+        }
     }
 
     public void CheckForPopUp() {
         if (gs.receiveReward && !gs.isPedroDead) {
-            if (gs.streak == 4) { //3day streak
-                Action action = () => {
-                    gs.exp += 15;
-                    gs.coups += 10;
-                    gs.receiveReward = false;
-                    if (!gs.achieve.Contains("3-day healthy streak")) {
-                        gs.achieve.Add("3-day healthy streak");  
-                    }
-
-                };
-                pop.PopUpTrue("Hey good job!", "Our 3-day streak was a success! For this, I'll give you some extra coups!", "Receive", rewardcolor, action);
+            if (gs.streak == 4 && !gs.achieve.Contains("Health is Wealth!")) { //3day streak
+                if (!gs.achieve.Contains("Third Time is A Charm")) {
+                    Action action = () => {
+                        gs.receiveReward = false;
+                        gs.achieve.Add("Health is Wealth!");  
+                        gs.achieve.Add("Third Time is A Charm");  
+                        gs.coups += 6;
+                    };
+                    pop.PopUpTrue("Hey good job!","We hit our 3rd healthy streak! Thanks for feeding me well! That's 2 achievements at once! \n\n You're getting: +6 Coups", "Receive", rewardcolor, action);
+                } else {
+                     Action action = () => {
+                        gs.receiveReward = false; 
+                        gs.achieve.Add("Third Time is A Charm");  
+                        gs.coups += 3;
+                    };
+                    pop.PopUpTrue("Hey good job!","We hit our 3rd healthy streak! \n\n You're getting: +3 Coups", "Receive", rewardcolor, action);
+                }
             } else if (gs.streak == 8) { //7day streak
                 Action action = () => {
-                    gs.exp += 35;
-                    gs.coups += 25;
                     gs.receiveReward = false;
-                    if (!gs.achieve.Contains("7-day healthy streak")) {
-                        gs.achieve.Add("7-day healthy streak");  
+                    if (!gs.achieve.Contains("Health Nut!")) {
+                        gs.achieve.Add("Health Nut!"); 
+                        gs.coups += 5; 
+                    } 
+                    if (!gs.achieve.Contains("Weak? Not Me!")) {
+                        gs.achieve.Add("Weak? Not Me!");  
+                        gs.coups += 5;
+                    }
+                };
+                pop.PopUpTrue("Wow!", "A week of healthy eating! I'm so lucky to have you! \n\n You're getting: +10 Coups", "Receive", rewardcolor, action);
+            } else if (gs.streak == 11) { //10day streak
+                Action action = () => {
+                    gs.receiveReward = false;
+                    if (!gs.achieve.Contains("Look at You! Keep it Up!")) {
+                        gs.achieve.Add("Look at You! Keep it Up!");  
+                        gs.coups += 7;
+                    }
+                    if (!gs.achieve.Contains("Ten is Mightier than the Sword!")) {
+                        gs.achieve.Add("Ten is Mightier than the Sword!");  
+                        gs.coups += 7;
+                    }
+                };
+                pop.PopUpTrue("Amazing!", "I have been healthy for 10 days! Now that's an achievement! \n\n You're getting: +14 Coups", "Receive", rewardcolor, action);
+            } else if (gs.streak == 15) { //14day streak
+                Action action = () => {
+                    gs.receiveReward = false;
+                    if (!gs.achieve.Contains("You're Doing Great!")) {
+                        gs.achieve.Add("You're Doing Great!");  
+                        gs.coups += 9;
+                    }
+                    if (!gs.achieve.Contains("It's Twice as Nice")) {
+                        gs.achieve.Add("It's Twice as Nice");  
+                        gs.coups += 9;
                     }
 
                 };
-                pop.PopUpTrue("Wow!", "Our 7-day streak was a success! Pedro is lucky to have you! Some extra coups is in order!", "Receive", rewardcolor, action);
+                pop.PopUpTrue("That's crazy!", "You're a natural! You must be feeling as great as I do! \n\n You're getting: +18 Coups", "Receive", rewardcolor, action);
             } else { //no streak
                 Action action = () => {
-                    gs.exp += 10;
-                    gs.coups += 5;
+                    gs.coups += 2;
                     gs.receiveReward = false;
 
                 };
-                pop.PopUpTrue("Congratulations!", "We reached yesterday's goal. Here are some coups!", "Receive", rewardcolor, action);
+                pop.PopUpTrue("Congratulations!", "We reached yesterday's goal. Here are some coups! \n\n You're getting: +2 Coups", "Receive", rewardcolor, action);
                 // gs.dailyFoodIntake.RemoveAt(dailyFoodIntake.Count-1);
             }
         } else if (!gs.isPedroDead) {
             if (File.Exists(Application.persistentDataPath + "/gamesave.anmls")){
-                //check here if softstreak > 2, softsreak 4, ss > 8
-                Action action = () => {
-                    gs.exp += 7;
-                    gs.coups += 2;
+                if (gs.softstreak == 4 && !gs.achieve.Contains("Third Time is A Charm")) { //3day streak
+                    Action action = () => {
+                        gs.achieve.Add("Third Time is A Charm");  
+                        gs.coups += 3;
+                    };
+                    pop.PopUpTrue("Hi there!", "Thanks for putting in the effort for the past 3 days. \n\n You're getting: +3 Coups", "Receive", rewardcolor, action);
+                } else if (gs.softstreak == 8 && !gs.achieve.Contains("Weak? Not Me!")) { //7day streak
+                    Action action = () => {
+                        gs.achieve.Add("Weak? Not Me!");  
+                        gs.coups += 5;
+                    };
+                    pop.PopUpTrue("That's cool!", "It's been a week and we are not giving up just yet! \n\n You're getting: +5 Coups", "Receive", rewardcolor, action);
+                } else if (gs.softstreak == 11 && !gs.achieve.Contains("Ten is Mightier than the Sword!")) { //10day streak
+                    Action action = () => {
+                        gs.achieve.Add("Ten is Mightier than the Sword!");  
+                        gs.coups += 7;
+                    };
+                    pop.PopUpTrue("Let's keep going!", "I know you've been trying and I'm very grateful! \n\n You're getting: +7 Coups", "Receive", rewardcolor, action);
+                } else if (gs.softstreak == 15 && !gs.achieve.Contains("It's Twice as Nice")) { //14day streak
+                    Action action = () => {
+                        gs.achieve.Add("It's Twice as Nice");  
+                        gs.coups += 9;
 
-                }; 
-                pop.PopUpTrue("Hi!", "Thank you for checking up on me! Here's a couple of coups. Let's spend this day well!", "OK", rewardcolor, action);
+                    };
+                    pop.PopUpTrue("ᕙ(`▿´)ᕗ", "I haven't been hungry for the past 2 weeks. Thanks for being consistent! \n\n You're getting: +9 Coups", "Receive", rewardcolor, action);
+                } else {
+                    Action action = () => {
+                        gs.coups += 1;
+                    }; 
+                    pop.PopUpTrue("Hi!", "Thank you for checking up on me! Let's spend this day well! \n\n You're getting: +1 Coup", "OK", rewardcolor, action);
+                }
             } else { //new user
                 Action action = () => {
                     gs.coups += 5;
@@ -261,7 +302,8 @@ public class GameScene : MonoBehaviour
 
     public void DeadPopUp() {
         Action action = () => {
-            gs.Revive();
+            gs.streak = 0;
+            gs.pedromsg1 = "Hey! I am back! I missed you! \n \n ...Don't let me starve again ok?";
         }; 
         pop.CenterDeadPopUp("Oops!", "It seems like you left Pedro to starve... Log the food you ate today to get him back...", "Log Meal",errorcolor, action);
 
@@ -269,10 +311,11 @@ public class GameScene : MonoBehaviour
 
     public void DeadHealthPopUp(){
         Action action = () => {
-            gs.Revive();
+            gs.streak = 0;
             gs.health = 100f;
             gs.hunger = 0f;
             gs.coups -= 2;
+            gs.pedromsg1 = "Hey! I feel good as new! How have you been? \n \n ...Don't let me die again ok?";
         }; 
         pop.CenterPopUp("Oh no!", "Pedro felt very ill... He's current health is at 0. You will have to pay the hospital bills for this.", "Pay Hospital",errorcolor, action);
 
@@ -312,11 +355,7 @@ public class GameScene : MonoBehaviour
         fatsSlider.SetMaxValue(gs.FAT);
         fatsSlider.SetCurrentVal(gs.FATIntake);
 
-        if (gs.achieve.Count != 0) {
-            achieveText.text = gs.achieve[(gs.achieve.Count - 1)];
-        } else {
-            achieveText.text = "No achievements yet";
-        }
+        
     }
 
 

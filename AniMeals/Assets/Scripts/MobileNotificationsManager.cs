@@ -131,7 +131,7 @@ public class MobileNotificationsManager : MonoBehaviour
         notification.Text = "Don't lose your chance! Our 2nd week sale is only for today!";
         notification.SmallIcon = "my_custom_icon_id";
         notification.LargeIcon = "my_custom_large_icon_id";
-        notification.FireTime = regDate.AddDays(1);
+        notification.FireTime = regDate.AddDays(14);
         AndroidNotificationCenter.SendNotification(notification, "channel_id");
     }
 }
