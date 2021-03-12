@@ -11,6 +11,7 @@ public class Save {
     public int streak;
     public int softstreak;
     public bool popped;
+    public bool opened;
     public string assess;
     public string pedromsg1;
     public string pedromsg2;

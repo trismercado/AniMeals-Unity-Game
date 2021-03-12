@@ -44,8 +44,8 @@ public class Player : MonoBehaviour
         public int streak;
         public int softstreak;
         public bool popped;
-        public bool showPedroDead;
-        // public bool isDiscounted;
+        public bool opened;
+        public bool justAte;
 
         static Player isUnique;
         private string savePath;
@@ -94,6 +94,7 @@ public class Player : MonoBehaviour
         InsertInFoodLogs(food);
     }
 
+    //Pedro
     public void IncreaseHunger(float amt) {
         hunger += amt;
         if (hunger >= 100f) {
@@ -111,6 +112,7 @@ public class Player : MonoBehaviour
         if (hunger < 0f) {
             hunger = 0f;
         }
+        justAte = true;
     } 
 
     public void Heal(float amt) {
@@ -134,10 +136,6 @@ public class Player : MonoBehaviour
         else {
             isPedroDead = false;
         }
-    }
-
-    public void Revive(){
-        
     }
 
     public void Reset(){
@@ -206,9 +204,8 @@ public class Player : MonoBehaviour
         if (dailyFoodIntake.Count != 0) {
             if (DateTime.Today.ToString() != dailyFoodIntake[(dailyFoodIntake.Count - 1)].dateLogged)
             {
-                //what we want: to be able to get the daily reward and check the intake 
-                //even when the app is open and the app prgoresses to the next day 
                 popped = false;
+                opened = false;
                 checkIntake();
                 CreateFoodLog();
             }
@@ -226,7 +223,8 @@ public class Player : MonoBehaviour
         else {
             health=100f;
             exp=10;
-            pedromsg1 = "My name is Pedro and this is AniMeals! I hope you'll enjoy your time with me! Hmm... To tell you a little more about myself... I usually like anime, movies, and hmm what else... OH! I LOVE HARRY POTTER!!!! My makers thought I'll fit right in with Hufflepuff! Can you believe them? Haha! I personally think I'm more of a Gryffindor, to be honest. Also, I was born with the purpose to track your eating journey. So, I usually get a little sensitive when I don't eat for a whole day. I hope you'll understand... Yeah, I guess that's all for now. " + "\n\n" + "Oh and by the way, you can come back here every day to check up on me!";
+            opened = false;
+            pedromsg1 = "My name is Pedro and this is AniMeals! Are you ready to start your journey with me? I can't wait too! To tell you a little background about myself, I was made with the purpose of tracking your food intake. So, I hope you'll understand when I get a little hangry... In any case, I'm glad to know you wanted to participate! My makers really put a lot of effort in creating me. So, let's do our best! " + "\n\n" + "Oh and by the way, you can come back here every day to check up on me!";
             PopulateSkinList();
             currentSkinID = 0;
             popped = false;
@@ -263,6 +261,7 @@ public class Player : MonoBehaviour
             pedromsg1 = this.pedromsg1,
             pedromsg2 = this.pedromsg2,
             popped = this.popped,
+            opened = this.opened,
             achieve = this.achieve,
             streak = this.streak,
             softstreak = this.softstreak,
@@ -311,6 +310,7 @@ public class Player : MonoBehaviour
             streak = save.streak;
             softstreak = save.softstreak;
             popped = save.popped;
+            opened = save.opened;
             foodIntake = save.foodIntake;
             dailyFoodIntake = save.dailyFoodIntake;
             skins = save.skins;
@@ -368,13 +368,19 @@ public class Player : MonoBehaviour
             pedromsg2 = "You didn't reach all the goal nutrients yesterday... So when you were gone my tummy started feeling weird... Let's eat better today so we can heal fast, ok?"; 
             Damage(20);
             streak = 0; 
+
+            if (dailyFoodIntake[dailyFoodIntake.Count-1].foodLogsForTheDay.Count > 0) {
+                softstreak += 1;
+            } else {
+                softstreak = 0;
+            }
         } else if (!a || !b || !c || !d) {
             pedromsg1 = "Remember: " + pedromsg1;
             pedromsg2 = pedromsg2 + "\n\n" + "I'm sure there are plenty of good food for our body. Let's eat better today!";
             Damage(20);
             streak = 0; 
 
-            if (foodIntake.Count > 0) {
+            if (dailyFoodIntake[dailyFoodIntake.Count-1].foodLogsForTheDay.Count > 0) {
                 softstreak += 1;
             } else {
                 softstreak = 0;
@@ -386,11 +392,11 @@ public class Player : MonoBehaviour
 
     public bool CheckFats() {
         if (FATIntake < FAT) {
-            pedromsg1 += "\n\t" + "Fat is our body’s fuel source, the major storage of energy in the body.";
+            pedromsg1 += "\n\t" + "Fats should not go below our fat allowance.";
             pedromsg2 += " We didn’t eat enough fats. Fats are good too, you know… Now, I’m feeling a bit stressed. How are you?";
             return false;
         } else if (FATIntake > (TEA*0.30)/9) {
-            pedromsg1 += "\n\t" + "Fat is our body’s fuel source, the major storage of energy in the body.";
+            pedromsg1 += "\n\t" + "Fat should not go beyond 30% of our calorie allowance.";
             pedromsg2 += " We had too much fats. I feel like my blood pressure is up there somewhere… How are you?";
             return false;
         } else {
@@ -400,11 +406,12 @@ public class Player : MonoBehaviour
 
     public bool CheckCarbs() {
         if (CHOIntake < (TEA*0.55)/4) {
-             pedromsg1 += "\n\t" + "Carbohydrates affect our blood sugar and energy.";
-             pedromsg2 += " I think the lack of calories caused my head to hurt.";
+             pedromsg1 += "\n\t" + "Carbohydrates can be 55% minimum of our calorie allowance.";
+             pedromsg2 += " Too much Carbs increases the risk of high blood sugar. We should definitely watch out for that one.";
              return false;
         } else if (CHOIntake > (TEA*0.70)/4) {
-             pedromsg1 += "\n\t" + "Carbohydrates affect our blood sugar and energy.";
+            //  pedromsg1 += "\n\t" + "Carbohydrates affect our blood sugar and energy.";
+             pedromsg1 += "\n\t" + "Carbohydrates can be 70% maximum of our calorie allowance.";
              pedromsg2 += " I’m feeling a bit tired today. Maybe it’s because we ate too much carbs yesterday? :( ";
              return false;
         } else {
@@ -414,11 +421,12 @@ public class Player : MonoBehaviour
 
     public bool CheckPro() {
         if (PROIntake < (TEA*0.10)/4) {
-            pedromsg1 += "\n\t" + "Protein is used to create the building blocks of the body.";
+            // pedromsg1 += "\n\t" + "Protein is used to create the building blocks of the body.";
+            pedromsg1 += "\n\t" + "Proteins can be 10% minimum of our calorie allowance.";
             pedromsg2 += " Yesterday's protein intake wasn't enough. A little more of that could really help with repairing our tissues.";
             return false;
         } else if (PROIntake > PRO){
-            pedromsg1 += "\n\t" + "Protein is used to create the building blocks of the body.";
+            pedromsg1 += "\n\t" + "Proteins should not exceed the given protein allowance.";
             pedromsg2 += " We exceeded the suggested protein intake yesterday. I hope you drank a lot of water. I heard too much protein can cause dehydration.";
             return false;
         } else {
@@ -428,18 +436,20 @@ public class Player : MonoBehaviour
 
     public bool CheckCal () {
         if (TEAIntake < 1200) {
-            pedromsg1 += "\n\t" + "Our body needs calories for energy.";
-            pedromsg2 += " There were not enough calories yesterday. So, I’m feeling a little weak today…";
+            pedromsg1 += "\n\t" + "There must be at least 1200 calories in total of our daily meals.";
+            pedromsg2 += " We did not reach the minimum calorie intake yesterday... So, I’m feeling a little weak today…";
             return false;
         } else if (TEAIntake > TEA) {
-            pedromsg1 += "\n\t" + "Our body needs calories for energy.";
-            pedromsg2 += "  I had a little too much calories. So, I’m feeling a little bloated…";
+            pedromsg1 += "\n\t" + "Our calorie intake should not exceed our calorie allowance.";
+            // pedromsg1 += "\n\t" + "Our body needs calories for energy.";
+            pedromsg2 += "  I had too much calories. So, I’m feeling a little bloated…";
             return false;
         } else {
             return true;
         }
     }
 
+    //make logs
     public void InsertInFoodLogs(FoodLog food) {
         if (dailyFoodIntake.Count != 0) {
             if (dailyFoodIntake[dailyFoodIntake.Count - 1].dateLogged == DateTime.Today.ToString()) {
@@ -479,8 +489,8 @@ public class Player : MonoBehaviour
         skins.Add(new Skin(0, "Pedro", "Your friend forever!", 0, true, true));
         skins.Add(new Skin(1, "Dairy Fairy", "Bippity boppityy cook!", 16, false, false));
         skins.Add(new Skin(2, "Surf and Burp", "My favorite course? Main, of course!", 30, false, false));
-        skins.Add(new Skin(3, "Moonpie", "BRB. Currently, out of this world.", 44, false, false));
-        skins.Add(new Skin(4, "P-Potter", "You're a wizard, Pedro...", 58, false, false));
+        skins.Add(new Skin(3, "Moonpie", "BRB. Currently, out of this world.", 50, false, false));
+        skins.Add(new Skin(4, "P-Potter", "You're a wizard, Pedro...", 80, false, false));
     }
 
     public void SetDiscounts() {

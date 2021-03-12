@@ -754,8 +754,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2016899212}
   m_HandleRect: {fileID: 2016899211}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 1
+  m_Value: 0
+  m_Size: 0.5394674
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3452,6 +3452,7 @@ GameObject:
   - component: {fileID: 1111731096}
   - component: {fileID: 1111731098}
   - component: {fileID: 1111731097}
+  - component: {fileID: 1111731099}
   m_Layer: 5
   m_Name: Body
   m_TagString: Untagged
@@ -3476,7 +3477,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0.000038146973}
-  m_SizeDelta: {x: 496.29138, y: 470.2351}
+  m_SizeDelta: {x: 496.29138, y: 313.2867}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1111731097
 MonoBehaviour:
@@ -3521,6 +3522,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1111731095}
   m_CullTransparentMesh: 0
+--- !u!114 &1111731099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111731095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &1122954039
 GameObject:
   m_ObjectHideFlags: 0
@@ -4153,7 +4168,8 @@ MonoBehaviour:
   streak: 0
   softstreak: 0
   popped: 0
-  showPedroDead: 0
+  opened: 0
+  justAte: 0
   skins: []
 --- !u!4 &1308795169
 Transform:
@@ -6231,7 +6247,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000045776367}
+  m_AnchoredPosition: {x: 0, y: -0.00006866455}
   m_SizeDelta: {x: 0, y: 67}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1929376815

@@ -483,11 +483,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e5d667f640524174c9213a00c1e983c2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 30
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 34
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1822,10 +1822,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e5d667f640524174c9213a00c1e983c2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
+    m_BestFit: 0
+    m_MinSize: 2
     m_MaxSize: 30
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -2312,10 +2312,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e5d667f640524174c9213a00c1e983c2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
+    m_BestFit: 0
+    m_MinSize: 2
     m_MaxSize: 30
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -2470,10 +2470,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e5d667f640524174c9213a00c1e983c2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
+    m_BestFit: 0
+    m_MinSize: 2
     m_MaxSize: 30
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -2969,10 +2969,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e5d667f640524174c9213a00c1e983c2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
+    m_BestFit: 0
+    m_MinSize: 2
     m_MaxSize: 30
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -2980,7 +2980,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Fed Pedro consistently for two weeks!
+  m_Text: Fed Pedro consistently for 2 weeks!
 --- !u!222 &706990566
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3122,10 +3122,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e5d667f640524174c9213a00c1e983c2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
+    m_BestFit: 0
+    m_MinSize: 2
     m_MaxSize: 30
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -4245,10 +4245,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e5d667f640524174c9213a00c1e983c2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
+    m_BestFit: 0
+    m_MinSize: 2
     m_MaxSize: 30
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -4403,10 +4403,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e5d667f640524174c9213a00c1e983c2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
+    m_BestFit: 0
+    m_MinSize: 2
     m_MaxSize: 30
     m_Alignment: 3
     m_AlignByGeometry: 0
@@ -4414,7 +4414,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Fed Pedro consistently for one week!
+  m_Text: Fed Pedro consistently for 1 week!
 --- !u!222 &1037934355
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4634,10 +4634,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e5d667f640524174c9213a00c1e983c2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
+    m_BestFit: 0
+    m_MinSize: 2
     m_MaxSize: 30
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -4996,7 +4996,8 @@ MonoBehaviour:
   streak: 0
   softstreak: 0
   popped: 0
-  showPedroDead: 0
+  opened: 0
+  justAte: 0
   skins: []
 --- !u!1 &1213727131
 GameObject:
@@ -5405,10 +5406,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e5d667f640524174c9213a00c1e983c2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
+    m_BestFit: 0
+    m_MinSize: 2
     m_MaxSize: 30
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -5416,7 +5417,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Bought Pedro's first costume!
+  m_Text: Bought Pedro's 1st costume!
 --- !u!222 &1365904313
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5719,18 +5720,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e5d667f640524174c9213a00c1e983c2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 30
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 34
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Unlocked three trophies!
+  m_Text: Unlocked 3 trophies!
 --- !u!222 &1497107073
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6757,10 +6758,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e5d667f640524174c9213a00c1e983c2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
+    m_BestFit: 0
+    m_MinSize: 2
     m_MaxSize: 30
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -6768,7 +6769,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Fed Pedro consistently for three days!
+  m_Text: Fed Pedro consistently for 3 days!
 --- !u!222 &1752292762
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6836,10 +6837,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e5d667f640524174c9213a00c1e983c2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
+    m_BestFit: 0
+    m_MinSize: 2
     m_MaxSize: 30
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -6847,7 +6848,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Bought Pedro three costumes!
+  m_Text: Bought Pedro 3 costumes!
 --- !u!222 &1773590401
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8605,18 +8606,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e5d667f640524174c9213a00c1e983c2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 30
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 31
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Unlock 10 trophies!
+  m_Text: Unlocked 10 trophies!
 --- !u!222 &2103810993
 CanvasRenderer:
   m_ObjectHideFlags: 0

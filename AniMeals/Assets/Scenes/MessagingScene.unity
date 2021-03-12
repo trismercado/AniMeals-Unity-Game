@@ -336,7 +336,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Dear Tris, '
+  m_Text: Welcome to AniMeals! Are you ready to start your journey with me? I can't
+    wait too! To tell you a little background about myself, I was made with the purpose
+    of tracking your food intake. So, I hope you'll understand when I get a little
+    hangry... In any case, I'm glad to know you wanted to participate! My makers
+    really put a lot of effort in creating me. So, let's do our best!
 --- !u!222 &479096004
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -449,7 +453,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Pedro
 
-    08 Choi St., Diamond City
+    08 Ani St., Meal City
 
     08-1225-0218'
 --- !u!222 &511058678
@@ -586,7 +590,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 251261774}
   m_HandleRect: {fileID: 251261773}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1036,7 +1040,8 @@ MonoBehaviour:
   streak: 0
   softstreak: 0
   popped: 0
-  showPedroDead: 0
+  opened: 0
+  justAte: 0
   skins: []
 --- !u!4 &938483374
 Transform:
@@ -1413,7 +1418,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: '
-
 
 
     Virtually yours,

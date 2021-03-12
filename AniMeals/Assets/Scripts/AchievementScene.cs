@@ -100,6 +100,10 @@ public class AchievementScene : MonoBehaviour
             } else if (gs.achieve.Count >= 6 && gs.achieve.Count < 10 && !gs.achieve.Contains("Silver Lining")) {
                 Action action = () => {
                         gs.achieve.Add("Silver Lining"); 
+                        if (!gs.achieve.Contains("Pros And Bronze")) {
+                            gs.achieve.Add("Pros And Bronze"); 
+                            gs.coups += 5; 
+                        }
                         gs.coups += 7; 
                 };
                 string saysmtng = "6 trophies? Your progress is showing! \n\n You're getting: +7 Coups ";
@@ -107,6 +111,14 @@ public class AchievementScene : MonoBehaviour
             } else if (gs.achieve.Count >= 10 && !gs.achieve.Contains("Winner Winner Chicken Dinner!")) {
                 Action action = () => {
                     gs.achieve.Add("Winner Winner Chicken Dinner!"); 
+                    if (!gs.achieve.Contains("Pros And Bronze")) {
+                        gs.achieve.Add("Pros And Bronze"); 
+                        gs.coups += 5; 
+                    }
+                    if (!gs.achieve.Contains("Silver Lining")) {
+                        gs.achieve.Add("Silver Lining"); 
+                        gs.coups += 7; 
+                    }
                     gs.coups += 9; 
                 };
                 string saysmtng = " You're trophy shelf looks pretty cool! You deserve it! \n\n You're getting: +9 Coups";

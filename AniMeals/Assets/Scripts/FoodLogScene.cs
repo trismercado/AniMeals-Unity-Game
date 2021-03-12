@@ -91,7 +91,7 @@ public class FoodLogScene : MonoBehaviour
         }
         gs = go.GetComponent<Player>();
 
-        go = GameObject.Find("PopUp");
+        go = GameObject.Find("FoodLogPopUp");
             if (go == null) {
                 Debug.LogError("pop up gameobject");
                 this.enabled = false;
@@ -144,7 +144,7 @@ public class FoodLogScene : MonoBehaviour
     public void OnInfoClick() {
         Action action = () => {
         };
-        string saysmtng = "To log in your food:" + "\n" + "1.  Input the food you just ate." + "\n" + "2.  If information about the food does not show, you can manually enter them by pressing the Manual button" + "\n\n" + "It's very good to be aware of the food we eat. So, let's eat well!";
+        string saysmtng = "To log in your food:" + "\n" + "1.  Input the food you ate." + "\n" + "2.  If information about the food does not show, you can manually enter them by pressing the Manual button." + "\n\n" + "It's very good to be aware of the food we eat. Make this a habit and I'm sure it will pay off well!";
         pop.CenterPopUp("Pedro:", saysmtng, "OK", rewardcolor, action);
     }
 
