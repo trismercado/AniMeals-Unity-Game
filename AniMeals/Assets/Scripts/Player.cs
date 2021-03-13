@@ -353,8 +353,8 @@ public class Player : MonoBehaviour
         assess = "";
         pedromsg1 = "";
         pedromsg2 = "";
-        bool a = CheckCarbs();
         bool b = CheckCal();
+        bool a = CheckCarbs();
         bool c = CheckPro();
         bool d = CheckFats(); 
         if (a && b && c && d) {

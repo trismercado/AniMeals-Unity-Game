@@ -352,8 +352,11 @@ public class GameScene : MonoBehaviour
             "I know... I'm a bit awkward sometimes... :/",
             "If you were waiting for your sign, this is it!",
             "Hi! Thanks for visiting!",
-            "Did you know? \n Our body needs calories for energy. \n Carbohydrates affect our blood sugar and energy. \n Protein is used to create the building blocks of the body. \n Fat is our body’s fuel source, and is the major storage of energy in the body."
-
+            "Did you know? \n Our body needs calories for energy. \n Carbohydrates affect our blood sugar and energy. \n Protein is used to create the building blocks of the body. \n Fat is our body’s fuel source, and is the major storage of energy in the body.",
+            "The more we become aware, the more that we can make healthy choices!",
+            "Did you know? Protein, Carbohydrates, and Fats are called Macronutrients. In short, macros! On the other hand, Vitamins and Minerals are called Micronutrients!",
+            "Eating healthy can be really hard... So don't forget to take it little by little!",
+            "Don't skip your fruits and veggies!"
         };
         System.Random rnd = new System.Random();
         Action action = () => {
