@@ -240,7 +240,7 @@ public class Player : MonoBehaviour
             health=100f;
             exp=10;
             opened = false;
-            pedromsg1 = "My name is Pedro and this is AniMeals! Are you ready to start your journey with me? I can't wait too! To tell you a little background about myself, I was made with the purpose of tracking your food intake. So, I hope you'll understand when I get a little hangry... In any case, I'm glad to know you wanted to participate! My makers really put a lot of effort in creating me. So, let's do our best! " + "\n\n" + "Oh and by the way, you can come back here every day to check up on me!";
+            pedromsg1 = "My name is Pedro and this is AniMeals! Are you ready to start your journey with me? I can't wait too! To tell you a little background about myself, I was made with the purpose of tracking your food intake. So, I hope you'll understand when I get a little hangry... In any case, I'm glad to know you wanted to participate! My makers really put a lot of effort in creating me. So, let's do our best! " + "\n\n" + "Oh and by the way, you can come back here every day to check up on me and claim your daily prize!";
             PopulateSkinList();
             currentSkinID = 0;
             popped = false;

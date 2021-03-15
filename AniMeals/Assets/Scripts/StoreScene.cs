@@ -181,7 +181,7 @@ public class StoreScene : MonoBehaviour
                 gs.coups += 9;   
 
             };
-            pop.PopUpTrue("The serve!", "She said variety, honeey!!! \n\n You're getting: +9 Coups", "Receive", rewardcolor, action);
+            pop.PopUpTrue("The serve!", "Ohh! The variety!!! \n\n You're getting: +9 Coups", "Receive", rewardcolor, action);
         }
 
     }
