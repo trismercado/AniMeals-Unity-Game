@@ -24,7 +24,7 @@ public class AchievementPopUp : MonoBehaviour
 
         button.onClick.AddListener(() => {
             action();
-            popUp.SetActive(false);
+            // popUp.SetActive(false);
         });
     }
 }

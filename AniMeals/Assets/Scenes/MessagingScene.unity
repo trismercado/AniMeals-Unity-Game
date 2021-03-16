@@ -207,6 +207,7 @@ GameObject:
   - component: {fileID: 391332587}
   - component: {fileID: 391332586}
   - component: {fileID: 391332585}
+  - component: {fileID: 391332588}
   m_Layer: 5
   m_Name: SafeAreaPanel
   m_TagString: Untagged
@@ -285,6 +286,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 391332583}
   m_CullTransparentMesh: 0
+--- !u!114 &391332588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391332583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c362119c119f2e40a997e0b87b90dca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &479096002
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +439,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 511058675}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
@@ -591,7 +604,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 251261773}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.89211124
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1255,11 +1268,11 @@ RectTransform:
   m_Father: {fileID: 911715212}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 800, y: 1601}
-  m_Pivot: {x: 0.5, y: 1}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &981902401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1281,7 +1294,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 03eb4a7d542f7094b9506560017a915e, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -1639,7 +1652,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c0e58f5fc43822649a403e446f4507e8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 09aa13616be9343458efe4febc6bd92c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

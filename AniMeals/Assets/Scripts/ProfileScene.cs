@@ -36,9 +36,9 @@ public class ProfileScene : MonoBehaviour
         gs = go.GetComponent<Player>();
 
         playerNameText.text = PlayerPrefs.GetString("nameKeyName");
-        weightText.text = PlayerPrefs.GetString("weightKeyName") + " kg";
-        heightText.text = PlayerPrefs.GetString("heightKeyName") + " cm";
-        DBWText.text = PlayerPrefs.GetString("DBWKeyName") + " kg";
+        weightText.text = PlayerPrefs.GetString("weightKeyName") + "kg";
+        heightText.text = PlayerPrefs.GetString("heightKeyName") + "cm";
+        DBWText.text = PlayerPrefs.GetString("DBWKeyName") + "kg";
         activityLevel = PlayerPrefs.GetString("activityLevelKeyName");
 
         if (float.Parse(activityLevel) == 1) {

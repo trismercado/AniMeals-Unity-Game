@@ -36,7 +36,7 @@ public class PopUp : MonoBehaviour
 
         button.onClick.AddListener(() => {
             action();
-            popUp.SetActive(false);
+            // popUp.SetActive(false);
         });
     }
 
@@ -49,7 +49,7 @@ public class PopUp : MonoBehaviour
 
         button1.onClick.AddListener(() => {
             action();
-            popUp1.SetActive(false);
+            // popUp1.SetActive(false);
         });
     }
 
@@ -62,7 +62,7 @@ public class PopUp : MonoBehaviour
 
         button2.onClick.AddListener(() => {
             action();  
-            popUp2.SetActive(false);
+            // popUp2.SetActive(false);
                       
         });
     }

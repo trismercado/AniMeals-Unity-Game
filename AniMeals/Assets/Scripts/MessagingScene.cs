@@ -28,7 +28,7 @@ public class MessagingScene : MonoBehaviour
 
     void Update() {
         greeting.text = "Dear " + PlayerPrefs.GetString("nameKeyName") + ",";
-        firstPart.text = gs.pedromsg1;
+        firstPart.text = "\n" + gs.pedromsg1;
     }
 
     public void OnBackClick()

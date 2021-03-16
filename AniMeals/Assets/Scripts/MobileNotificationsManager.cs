@@ -26,14 +26,18 @@ public class MobileNotificationsManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AndroidNotificationCenter.CancelAllDisplayedNotifications();
+        // AndroidNotificationCenter.CancelAllDisplayedNotifications();
 
         defaultNotificationChannel = new AndroidNotificationChannel()
         {
             Id = "channel_id",
             Name = "Default Channel",
+            CanShowBadge = true,
+            EnableLights = true,
+            EnableVibration = true,
             Importance = Importance.High,
             Description = "Generic notifications",
+            VibrationPattern = new long[]{1000}
         };
         AndroidNotificationCenter.RegisterNotificationChannel(defaultNotificationChannel);
 
@@ -41,11 +45,12 @@ public class MobileNotificationsManager : MonoBehaviour
         savePath = Application.persistentDataPath + "/gamesave.anmls";
         if (File.Exists(savePath)) {
             CheckUpNotif();
+            salenotif();
+            // trialnotif();
         } else {
             morningnotif();
             noonnotif();
             evenotif();
-            // trialnotif();
         }
         
         
@@ -54,10 +59,12 @@ public class MobileNotificationsManager : MonoBehaviour
     public void morningnotif() {
         var notification = new AndroidNotification();
         notification.Title = "Good Morning!";
-        notification.Text = "Let's have some food to start the day right!";
+        notification.Text = "We need good food to start the day right!";
         notification.SmallIcon = "my_custom_icon_id";
         notification.LargeIcon = "my_custom_large_icon_id";
-        
+        notification.ShouldAutoCancel = true;
+        notification.ShowTimestamp = true;
+        notification.Color = new Color32(0x3F, 0xC8, 0x8D, 0xFF);
         long elapsedTicks = eightmorning.Ticks - now.Ticks;
         TimeSpan elapsedSpan = new TimeSpan(elapsedTicks);
         float p = Convert.ToSingle(elapsedSpan.TotalSeconds);
@@ -77,7 +84,9 @@ public class MobileNotificationsManager : MonoBehaviour
         notification.Text = "Don't forget to feed me lunch too~";
         notification.SmallIcon = "my_custom_icon_id";
         notification.LargeIcon = "my_custom_large_icon_id";
-        
+        notification.ShouldAutoCancel = true;
+        notification.ShowTimestamp = true;
+        notification.Color = new Color32(0x3F, 0xC8, 0x8D, 0xFF);
         long elapsedTicks = twelvenoon.Ticks - now.Ticks;
         TimeSpan elapsedSpan = new TimeSpan(elapsedTicks);
         float p = Convert.ToSingle(elapsedSpan.TotalSeconds);
@@ -97,7 +106,9 @@ public class MobileNotificationsManager : MonoBehaviour
         notification.Text = "Let's have a good meal to cap off the day!";
         notification.SmallIcon = "my_custom_icon_id";
         notification.LargeIcon = "my_custom_large_icon_id";
-        
+        notification.ShouldAutoCancel = true;
+        notification.ShowTimestamp = true;
+        notification.Color = new Color32(0x3F, 0xC8, 0x8D, 0xFF);
         long elapsedTicks = sevenevening.Ticks - now.Ticks;
         TimeSpan elapsedSpan = new TimeSpan(elapsedTicks);
         float p = Convert.ToSingle(elapsedSpan.TotalSeconds);
@@ -116,13 +127,20 @@ public class MobileNotificationsManager : MonoBehaviour
 
         var notification = new AndroidNotification();
         notification.Title = "50% Off on ALL Items!";
-        notification.Text = "Don't lose your chance! Our 2nd week sale is only for today!";
+        notification.Text = "Don't lose your chance! It's only for today!";
         notification.SmallIcon = "my_custom_icon_id";
         notification.LargeIcon = "my_custom_large_icon_id";
-        notification.FireTime = regDate.AddDays(14);
+        notification.FireTime = regDate.AddDays(7);
+        notification.ShouldAutoCancel = true;
+        notification.ShowTimestamp = true;
+        notification.Color = new Color32(0x3F, 0xC8, 0x8D, 0xFF);
         AndroidNotificationCenter.SendNotification(notification, "channel_id");
         var id = AndroidNotificationCenter.SendNotification(notification, "channel_id");
 
+        if (AndroidNotificationCenter.CheckScheduledNotificationStatus(id)== NotificationStatus.Scheduled) {
+            AndroidNotificationCenter.CancelNotification(id);
+            AndroidNotificationCenter.SendNotification(notification, "channel_id");
+        }
     }
 
     public void trialnotif() {
@@ -131,8 +149,19 @@ public class MobileNotificationsManager : MonoBehaviour
         notification.Text = "Choi Seungcheol Best Leader";
         notification.SmallIcon = "my_custom_icon_id";
         notification.LargeIcon = "my_custom_large_icon_id";
-        notification.FireTime = System.DateTime.Now.AddSeconds(10);
-        AndroidNotificationCenter.SendNotification(notification, "channel_id");
+        notification.FireTime = System.DateTime.Now.AddSeconds(20);
+        notification.ShouldAutoCancel = true;
+        notification.ShowTimestamp = true;
+        notification.Color = new Color32(0x3F, 0xC8, 0x8D, 0xFF);
+        notification.RepeatInterval = new TimeSpan(0, 0, 0, 30);
+
+        var id = AndroidNotificationCenter.SendNotification(notification, "channel_id");
+
+        
+        if (AndroidNotificationCenter.CheckScheduledNotificationStatus(id)== NotificationStatus.Scheduled) {
+            AndroidNotificationCenter.CancelNotification(id);
+            AndroidNotificationCenter.SendNotification(notification, "channel_id");
+        }
     }
 
     public void CheckUpNotif() {
@@ -142,9 +171,10 @@ public class MobileNotificationsManager : MonoBehaviour
         notification.SmallIcon = "my_custom_icon_id";
         notification.LargeIcon = "my_custom_large_icon_id";
         notification.FireTime = System.DateTime.Now.AddHours(20);
-        
+        notification.ShouldAutoCancel = true;
+        notification.ShowTimestamp = true;
+        notification.Color = new Color32(0x3F, 0xC8, 0x8D, 0xFF);
         var id = AndroidNotificationCenter.SendNotification(notification, "channel_id");
-
 
         if (AndroidNotificationCenter.CheckScheduledNotificationStatus(id)== NotificationStatus.Scheduled) {
             AndroidNotificationCenter.CancelNotification(id);

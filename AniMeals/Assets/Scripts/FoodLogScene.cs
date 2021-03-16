@@ -105,7 +105,7 @@ public class FoodLogScene : MonoBehaviour
     // Update is called once per frame
     void Update () {
         servingText.text = serving.ToString();  // make it a string to output to the Text object     
-        gramPerServingText.text = grams.ToString() + " grams per serving";
+        gramPerServingText.text = grams.ToString() + "g per serving";
         calText.text = (cal * serving).ToString() + "kcal";
         carbsText.text = (carbs * serving).ToString() + "g";
         proteinText.text = (protein * serving).ToString() + "g";
@@ -137,7 +137,7 @@ public class FoodLogScene : MonoBehaviour
     }
 
     public void OnMinusClick() {
-        if (serving > 1) 
+        if (serving > 0.5) 
             serving = serving - 0.5f;
     }
 

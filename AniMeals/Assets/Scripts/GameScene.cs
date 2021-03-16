@@ -118,11 +118,32 @@ public class GameScene : MonoBehaviour
         SceneManager.LoadScene(4);
     }
 
-    public void CreditsClick() {
+    public void OnCaloriesClick() {
         Action action = () => {
             
         }; 
-        pop.PopUpTrue("Credits", "Music: \n Tranquility by Dee Yan-Key \n\n Icons: ", "OK", rewardcolor, action);
+        pop.CenterPopUp("Pedro:", "To keep us healthy, our Calorie intake should range from: \n1200kcal to " + gs.TEA + "kcal", "OK", rewardcolor, action);
+    } 
+
+    public void OnCarbsClick() {
+        Action action = () => {
+            
+        }; 
+        pop.CenterPopUp("Pedro:", "To keep us healthy, our Carbohydrates intake should range from: \n" + gs.MinCHO + "g to " + gs.MaxCHO + "g", "OK", rewardcolor, action);
+    } 
+
+    public void OnProClick() {
+        Action action = () => {
+            
+        }; 
+        pop.CenterPopUp("Pedro:", "To keep us healthy, our Proteins intake should range from: \n" + gs.MinPRO + "g to " + gs.PRO + "g", "OK", rewardcolor, action);
+    } 
+
+    public void OnFatsClick() {
+        Action action = () => {
+            
+        }; 
+        pop.CenterPopUp("Pedro:", "To keep us healthy, our Fats intake should range from: \n" + gs.FAT + "g to " + gs.MaxFAT + "g", "OK", rewardcolor, action);
     } 
 
     public void OnAchievementClick(){
@@ -307,7 +328,7 @@ public class GameScene : MonoBehaviour
                     gs.coups += 5;
 
                 }; 
-                pop.CenterPopUp("Welcome!", "It's nice to meet you. Thanks for joining! For that, I shall start you off with 5 coups! Oh, and coups is short for coupons! You can check out Achievements to see how you can get more coups. Collect as much as you can to get some cool stuff at the store!", "Receive", rewardcolor, action);
+                pop.CenterPopUp("Welcome!", "It's nice to meet you. Thanks for joining! For that, I shall start you off with 5 coups! Oh, and coups is short for coupons! You can check out Achievements to see how you can get more of them. Collect as much as you can to get some cool stuff at the store!", "Receive", rewardcolor, action);
             }    
         } 
         
@@ -349,14 +370,15 @@ public class GameScene : MonoBehaviour
             "The percentage distribution of these nutrients can differ from person to person because of various diet prescriptions and usual eating habits... So, I made sure to make the appropriate range for you.",
             "I don't usually die but when my health reaches 0, you'd have to pay 1 coup for my bills... :/",
             "How was your day?",
-            "I know... I'm a bit awkward sometimes... :/",
+            "I know... I'm a bit awkward sometimes...",
             "If you were waiting for your sign, this is it!",
             "Hi! Thanks for visiting!",
             "Did you know? \n Our body needs calories for energy. \n Carbohydrates affect our blood sugar and energy. \n Protein is used to create the building blocks of the body. \n Fat is our body’s fuel source, and is the major storage of energy in the body.",
             "The more we become aware, the more that we can make healthy choices!",
             "Did you know? Protein, Carbohydrates, and Fats are called Macronutrients. In short, macros! On the other hand, Vitamins and Minerals are called Micronutrients!",
             "Eating healthy can be really hard... So don't forget to take it little by little!",
-            "Don't skip your fruits and veggies!"
+            "Don't skip your fruits and veggies!",
+            "I look cute! Don't I?"
         };
         System.Random rnd = new System.Random();
         Action action = () => {

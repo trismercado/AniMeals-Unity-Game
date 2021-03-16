@@ -21,7 +21,7 @@ public class FoodLogPopUp : MonoBehaviour
 
         button1.onClick.AddListener(() => {
             action();
-            popUp1.SetActive(false);
+            // popUp1.SetActive(false);
         });
     }
 }

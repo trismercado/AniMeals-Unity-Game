@@ -28,6 +28,10 @@ public class Player : MonoBehaviour
         public float PRO;
         public float FAT;
         public float DBW;
+        public float MinPRO;
+        public float MinCHO;
+        public float MaxCHO;
+        public float MaxFAT;
 
         //User Intake
         public float TEAIntake;
@@ -64,7 +68,7 @@ public class Player : MonoBehaviour
 
         if(isUnique != null) {
             Destroy(this.gameObject);
-            Debug.Log("Player GameObject was destroyed");
+            // Debug.Log("Player GameObject was destroyed");
             return;
         }
         isUnique = this;
@@ -79,12 +83,14 @@ public class Player : MonoBehaviour
         
         IncreaseHunger(Time.deltaTime * 0.069444444444f / 60f);
     }
-
+    
+    //Pedro
     public void AddToIntake(float cal, float carbs, float protein, float fat, FoodLog food){
-        TEAIntake += cal;
-        CHOIntake += carbs;
-        PROIntake += protein;
-        FATIntake += fat;
+        TEAIntake += Mathf.Round(cal * 10f) / 10f;
+        CHOIntake += Mathf.Round(carbs * 10f) / 10f;
+        PROIntake += Mathf.Round(protein * 10f) / 10f;
+        FATIntake += Mathf.Round(fat * 10f) / 10f;
+
         // foodIntake.Add(food); 
         // DecreaseHunger((cal/TEA)*100);
         if (TEAIntake < TEA) DecreaseHunger((cal/(TEA-TEAIntake))*100); 
@@ -93,8 +99,7 @@ public class Player : MonoBehaviour
         // //if cal intake is greater than the required just decrease hunger with regards to its cal requirement
         InsertInFoodLogs(food);
     }
-
-    //Pedro
+    
     public void IncreaseHunger(float amt) {
         hunger += amt;
         if (hunger >= 100f) {
@@ -177,21 +182,32 @@ public class Player : MonoBehaviour
         TEA = float.Parse(weight)*actLevel;
         TEA = Mathf.Round(TEA / 50f) * 50f;
 
-
         //Carbohydrates
         CHO =  TEA * 0.65f;
         CHO = CHO / 4f;
         CHO = Mathf.Round(CHO / 5f) * 5f;
+        MinCHO = TEA * 0.55f;
+        MinCHO = MinCHO / 4f;
+        MinCHO = Mathf.Round(MinCHO / 5f) * 5f;
+        MaxCHO = TEA * 0.70f;
+        MaxCHO = MaxCHO / 4f;
+        MaxCHO = Mathf.Round(MaxCHO / 5f) * 5f;
 
         //Protein
         PRO = TEA * 0.15f;
         PRO = PRO / 4f;
         PRO = Mathf.Round(PRO / 5f) * 5f;
-        
+        MinPRO = TEA * 0.10f;
+        MinPRO = MinPRO / 4f;
+        MinPRO = Mathf.Round(MinPRO / 5f) * 5f;
+
         //Fat
         FAT = TEA * 0.2f;
         FAT = FAT / 9f;
         FAT = Mathf.Round(FAT / 5f) * 5f;
+        MaxFAT = TEA * 0.30f ;
+        MaxFAT = MaxFAT / 9f;
+        MaxFAT = Mathf.Round(MaxFAT / 5f) * 5f;
 
 
         DBW = (float.Parse(height)-100f)-((float.Parse(height)-100f)*0.1f);
@@ -364,7 +380,7 @@ public class Player : MonoBehaviour
             streak += 1;
             softstreak += 1;
         } if (!a && !b && !c && !d) {
-            pedromsg1 = "Remember: " + pedromsg1;
+            // pedromsg1 = "Remember: " + pedromsg1;
             pedromsg2 = "You didn't reach all the goal nutrients yesterday... So when you were gone my tummy started feeling weird... Let's eat better today so we can heal fast, ok?"; 
             Damage(20);
             streak = 0; 
@@ -375,7 +391,7 @@ public class Player : MonoBehaviour
                 softstreak = 0;
             }
         } else if (!a || !b || !c || !d) {
-            pedromsg1 = "Remember: " + pedromsg1;
+            // pedromsg1 = "Remember: " + pedromsg1;
             pedromsg2 = pedromsg2 + "\n\n" + "I'm sure there are plenty of good food for our body. Let's eat better today!";
             Damage(20);
             streak = 0; 
@@ -391,12 +407,13 @@ public class Player : MonoBehaviour
     }
 
     public bool CheckFats() {
+        // Debug.Log("Max Fat: " + MaxFAT);
         if (FATIntake < FAT) {
-            pedromsg1 += "\n\t" + "Fats should not go below our fat allowance.";
+            // pedromsg1 += "\n\t" + "Fats should not go below " + FAT + "g.";
             pedromsg2 += " We didn’t eat enough fats. Fats are good too, you know… Now, I’m feeling a bit stressed. How are you?";
             return false;
-        } else if (FATIntake > (TEA*0.30)/9) {
-            pedromsg1 += "\n\t" + "Fat should not go beyond 30% of our calorie allowance.";
+        } else if (FATIntake > MaxFAT) {
+            // pedromsg1 += "\n\t" + "Fat should not go beyond " + MaxFAT + "g (30% of our calorie allowance).";
             pedromsg2 += " We had too much fats. I feel like my blood pressure is up there somewhere… How are you?";
             return false;
         } else {
@@ -405,14 +422,16 @@ public class Player : MonoBehaviour
     }
 
     public bool CheckCarbs() {
-        if (CHOIntake < (TEA*0.55)/4) {
-             pedromsg1 += "\n\t" + "Carbohydrates can be 55% minimum of our calorie allowance.";
-             pedromsg2 += " Too much Carbs increases the risk of high blood sugar. We should definitely watch out for that one.";
+        // Debug.Log("Min Cho: " + MinCHO);
+        // Debug.Log("Max Cho: " + MaxCHO);
+        if (CHOIntake < MinCHO) {
+            //  pedromsg1 += "\n\t" + "Carbohydrates should not go below " + MinCHO + "g (55% of our calorie allowance).";
+             pedromsg2 += " I’m feeling a bit tired today. Maybe we need more carbs? :(";
              return false;
-        } else if (CHOIntake > (TEA*0.70)/4) {
+        } else if (CHOIntake > MaxCHO) {
             //  pedromsg1 += "\n\t" + "Carbohydrates affect our blood sugar and energy.";
-             pedromsg1 += "\n\t" + "Carbohydrates can be 70% maximum of our calorie allowance.";
-             pedromsg2 += " I’m feeling a bit tired today. Maybe it’s because we ate too much carbs yesterday? :( ";
+            //  pedromsg1 += "\n\t" + "Carbohydrates should not go below " + MaxCHO + "g (70% of our calorie allowance).";
+             pedromsg2 += " Too much Carbs increases the risk of high blood sugar. We should definitely watch out for that one.";
              return false;
         } else {
             return true;
@@ -420,27 +439,29 @@ public class Player : MonoBehaviour
     }
 
     public bool CheckPro() {
-        if (PROIntake < (TEA*0.10)/4) {
+        // Debug.Log("Min Pro: " + MinPRO);
+        if (PROIntake <  MinPRO) {
             // pedromsg1 += "\n\t" + "Protein is used to create the building blocks of the body.";
-            pedromsg1 += "\n\t" + "Proteins can be 10% minimum of our calorie allowance.";
+            // pedromsg1 += "\n\t" + "Proteins should not go below " + MinPRO + "g (10% of our calorie allowance).";
             pedromsg2 += " Yesterday's protein intake wasn't enough. A little more of that could really help with repairing our tissues.";
             return false;
         } else if (PROIntake > PRO){
-            pedromsg1 += "\n\t" + "Proteins should not exceed the given protein allowance.";
+            // pedromsg1 += "\n\t" + "Proteins should not exceed " + PRO + "g.";
             pedromsg2 += " We exceeded the suggested protein intake yesterday. I hope you drank a lot of water. I heard too much protein can cause dehydration.";
             return false;
         } else {
             return true;
         }
+        
     }
 
     public bool CheckCal () {
         if (TEAIntake < 1200) {
-            pedromsg1 += "\n\t" + "There must be at least 1200 calories in total of our daily meals.";
+            // pedromsg1 += "\n\t" + "There must be at least 1200 calories in total of our daily meals.";
             pedromsg2 += " We did not reach the minimum calorie intake yesterday... So, I’m feeling a little weak today…";
             return false;
         } else if (TEAIntake > TEA) {
-            pedromsg1 += "\n\t" + "Our calorie intake should not exceed our calorie allowance.";
+            // pedromsg1 += "\n\t" + "Our calorie intake should not exceed our calorie allowance.";
             // pedromsg1 += "\n\t" + "Our body needs calories for energy.";
             pedromsg2 += "  I had too much calories. So, I’m feeling a little bloated…";
             return false;
@@ -487,18 +508,18 @@ public class Player : MonoBehaviour
     //store
     public void PopulateSkinList() {
         skins.Add(new Skin(0, "Pedro", "Your friend forever!", 0, true, true));
-        skins.Add(new Skin(1, "Dairy Fairy", "Bippity boppityy cook!", 16, false, false));
-        skins.Add(new Skin(2, "Surf and Burp", "My favorite course? Main, of course!", 30, false, false));
-        skins.Add(new Skin(3, "Moonpie", "BRB. Currently, out of this world.", 50, false, false));
-        skins.Add(new Skin(4, "P-Potter", "You're a wizard, Pedro...", 80, false, false));
+        skins.Add(new Skin(1, "Dairy Fairy", "Bippity boppityy cook!", 10, false, false));
+        skins.Add(new Skin(2, "Surf and Burp", "My favorite course? Main, of course!", 14, false, false));
+        skins.Add(new Skin(3, "Moonpie", "BRB. Currently, out of this world.", 22, false, false));
+        skins.Add(new Skin(4, "P-Potter", "You're a wizard, Pedro...", 40, false, false));
     }
 
     public void SetDiscounts() {
         DateTime today = DateTime.Today;
         DateTime regDate = Convert.ToDateTime(PlayerPrefs.GetString("isRegisteredKeyName"));
-        float[] origPrices = {0f, 16f, 30f, 44f, 58f};
-        if (regDate.AddDays(14) == today) {
-            Debug.Log("Sale today!");
+        float[] origPrices = {0f, 10f, 14f, 22f, 40f};
+        if (regDate.AddDays(7) == today) {
+            // Debug.Log("Sale today!");
             for (int i = 0; i < 5; i++) {
                 skins[i].price = origPrices[i] - (origPrices[i]*0.5f);
             }
